@@ -1,9 +1,10 @@
 # Facebook
 
-## Facebook Profile Summary
- 
+## Facebook Profile Summary 
 ```shell
-curl 'https://quantum.socialmetrix.com/api/v1/accounts/1896/projects/0/facebook/profiles/stat-summary?ids=15087023444,182162001806727&since=2016-09-09&timezone=America%2FArgentina%2FBuenos_Aires&until=2016-10-08' 
+curl 'https://quantum.socialmetrix.com/api/v1/accounts/1896/projects/0/facebook/profiles/stat-summary?ids=15087023444,182162001806727&since=2016-09-09&timezone=America%2FArgentina%2FBuenos_Aires&until=2016-10-08' \
+  -H "Content-Type: application/json" \ 
+  -d '{ "method":"API-SECRET", "secret":"0220a22d27be69e4.........54aa9840e5c4136e"}'
 ```
 
 > The above command returns JSON structured like this:
@@ -68,3 +69,16 @@ Parameter | Description | Example
 **since** | Starting date (inclusive) | 2016-09-09
 **until** | Ending date (exclusive) | 2016-09-09
 *timezone* | (Optional): Time-zone that my metrics should be calculated | America/Argentina/Buenos_Aires
+
+### Response
+
+The response contains to main objects per **id**, `data.current` contains the acutal period and `data.previous` contains the values for the same previous period lenght.
+
+Field | Description | Example
+--------- | ----------- | -----------
+**totalFans** | The total amount of fans on the period | 22611837
+**newFans** | New fans gained/lost in the period | 172184
+**newPosts** | New posts published in the period | 34
+**newInteractions** | New interactions in the period | 94045
+**engagementRate** | Engagement rate generated in the period | 0.0041750576
+
