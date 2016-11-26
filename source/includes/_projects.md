@@ -25,14 +25,14 @@ One of the first requests you probably will do is get a list of all your active 
 
 ###HTTP Request
 
-`GET /accounts/<ACCOUNT_ID>/projects`
+`GET /accounts/<ACCOUNT>/projects`
 
 
 ### URL Parameters
 
 Parameter | Description | Example
 --------- | ----------- | -----------
-**ACCOUNT_ID** | The ID obtained from JWT response: `user.accountId` | 790
+**ACCOUNT** | The ID obtained from JWT response: `user.accountId` | 790
 
 
 
