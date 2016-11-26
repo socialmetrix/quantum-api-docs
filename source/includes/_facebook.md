@@ -52,14 +52,14 @@ This endpoint brings all the facebook pages that are listed on the project, amon
 
 ### HTTP Request
 
-`GET /accounts/<ACCOUNT_ID>/projects/<PROJECT_ID>/facebook/profiles/stat-summary`
+`GET /accounts/<ACCOUNT>/projects/<PROJECT>/facebook/profiles/stat-summary`
 
 ### URL Parameters
 
 Parameter | Description | Example
 --------- | ----------- | -----------
-**ACCOUNT_ID** | The ID obtained from JWT response: `user.accountId` | 790
-**PROJECT_ID** | Current Project | 0
+**ACCOUNT** | The ID obtained from JWT response: `user.accountId` | 790
+**PROJECT** | Current Project | 0
 
 ### Query Parameters
 
@@ -68,7 +68,7 @@ Parameter | Description | Example
 **ids** | A comma-separated list of profiles ids belonging to the project | 15087023444,182162001806727
 **since** | Starting date (inclusive) | 2016-09-09
 **until** | Ending date (exclusive) | 2016-09-09
-*timezone* | (Optional): Time-zone that my metrics should be calculated | America/Argentina/Buenos_Aires
+***timezone*** | (Optional): Time-zone that my metrics should be calculated | America/Argentina/Buenos_Aires
 
 ### Response
 

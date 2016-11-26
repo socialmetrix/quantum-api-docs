@@ -14,6 +14,7 @@ includes:
   - kittens
   - users
   - usage
+  - others
   - errors
   - related
 
@@ -26,17 +27,18 @@ Welcome to the **Socialmetrix Quantum API!** Quantum provides relevant informati
 
 This documentation will help you through Quantum API, all its functionalities and endpoints, to make sure you have the best experience with our product.
 
+### Understand Information Organization
+
+Your **Account** is the top element on the structure, as an [Account Owner](#roles) you can create all elements 
+
+Accessing your [account](#roles), you can create several [projects](#projects), on each project you can load profiles for [Facebook](#facebook), [Twitter](#twitter), [YouTube](#youtube) and [Instagram](#instagram), on each profile you can query specific metrics for the Social Network, also you can add content to a [campaign](#campaign) and access those as consolidate metrics.
+
+![Quantum API Structure](/images/api-structure.png)
+
 ### URL Structure
 
 Currently our API is on **version 1** and all HTTP requests are made using this base: `https://api.quantum.socialmetrix.com/v1`
 
-### Account Structure
-
-Your account can contains many **Projects**, each project contains many **Profiles**
-
-* Projects
-* Social Media Profiles
-* Campaigns
 
 # Authentication
 
