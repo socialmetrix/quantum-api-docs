@@ -37,8 +37,7 @@ Accessing your [account](#roles), you can create several [projects](#projects), 
 
 ### URL Structure
 
-Currently our API is on **version 1** and all HTTP requests are made using this base: `https://api.quantum.socialmetrix.com/v1`
-
+Currently our API is on **version 1** and all HTTP requests are made using this base: `https://api.quantum.socialmetrix.com/v1`.
 
 # Authentication
 
@@ -46,29 +45,30 @@ This API relies on [Json Web Token (JWT)](https://jwt.io) as autorization/authen
 
 ## Getting your API Secret
 
-IN order to obtain a
+Follow these steps to obtain your API secret:
 
+1- Login at [Socialmetrix Quantum](https://quantum.socialmetrix.com) using Facebook or Twitter and go to **Settings**:
 
-1- Login at [Socialmetrix Quantum](https://quantum.socialmetrix.com) using Facebook or Twitter.
+![Quantum Settings](quantum-settings.png)
 
-2- After logging-in, go to My Account:
+2- Select the **API tab** and copy your API Secret:
 
-3- Click on My Account:
+![Quantum API Secret](quantum-settings-api-secret.png)
 
-4- Select option API and copy your API Secret:
 
 <aside class="warning">
 Please do not expose your API Secret - if an attacker have control of your API Secret, he/she will be able to delete all your accounts. <b>Keep it safe!</b>
 </aside>
 
-## Getting your Json Web Token
+## Issuing a Json Web Token
 
 You need POST a json containing the `"method": “API-SECRET”` and your `secret`.
 
 ```shell
-curl -XPOST 'https://api.quantum.socialmetrix.com/login' \ 
-  -H "Content-Type: application/json" \ 
-  -d '{ "method":"API-SECRET", "secret":"0220a22d27be69e4.........54aa9840e5c4136e"}'
+curl -XPOST 'https://api.quantum.socialmetrix.com/login' \
+  -H "Content-Type: application/json" \
+  -d '{ "method":"API-SECRET",
+  "secret":"0220a22d27be69e4.........54aa9840e5c4136e"}'
 ```
 
 > A valid response will contains relevant data of your account:
@@ -97,13 +97,25 @@ curl -XPOST 'https://api.quantum.socialmetrix.com/login' \
 }
 ```
 
-<aside class="success">
-**jwt**: This is the JWT authentication header and it **MUST** be used on all requests after authenticating.
+### Response
 
-**accountId**: Your account Id is used on all requests either.
-</aside>
+From the response json you'll receive a lot information about the user, for authentication purposes, the most important values are:
+
+Field | Description | Example
+--------- | ----------- | -----------
+**accountId** | All requests originates from an account | 790
+**jwt** | The authentication token | eyJhbGc...
+
 
 <aside class="notice">
-API Secret has an expire of 20 days, you MUST re-authorize at least one time within this period
+The JWT issued has a lifetime of 20 days. Please login again periodically.
 </aside>
- 
+
+<br />
+### Storing JWT for convenience 
+Store the value of `jwt` on a variable, so you can follow along all the next examples without having to constantly edit each line:
+
+<code>
+export <b>JWT</b>='eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJTTVgiLCJpYXQiOjE0....'
+export <b>ACCOUNT</b>=790
+</code>
