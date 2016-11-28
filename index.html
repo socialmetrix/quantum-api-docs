@@ -1,0 +1,921 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>WIP - Quantum API Reference</title>
+
+    <style>
+      .highlight table td { padding: 5px; }
+.highlight table pre { margin: 0; }
+.highlight, .highlight .w {
+  color: #f8f8f2;
+  background-color: #272822;
+}
+.highlight .err {
+  color: #151515;
+  background-color: #ac4142;
+}
+.highlight .c, .highlight .cd, .highlight .cm, .highlight .c1, .highlight .cs {
+  color: #505050;
+}
+.highlight .cp {
+  color: #f4bf75;
+}
+.highlight .nt {
+  color: #f4bf75;
+}
+.highlight .o, .highlight .ow {
+  color: #d0d0d0;
+}
+.highlight .p, .highlight .pi {
+  color: #d0d0d0;
+}
+.highlight .gi {
+  color: #90a959;
+}
+.highlight .gd {
+  color: #ac4142;
+}
+.highlight .gh {
+  color: #6a9fb5;
+  background-color: #151515;
+  font-weight: bold;
+}
+.highlight .k, .highlight .kn, .highlight .kp, .highlight .kr, .highlight .kv {
+  color: #aa759f;
+}
+.highlight .kc {
+  color: #d28445;
+}
+.highlight .kt {
+  color: #d28445;
+}
+.highlight .kd {
+  color: #d28445;
+}
+.highlight .s, .highlight .sb, .highlight .sc, .highlight .sd, .highlight .s2, .highlight .sh, .highlight .sx, .highlight .s1 {
+  color: #90a959;
+}
+.highlight .sr {
+  color: #75b5aa;
+}
+.highlight .si {
+  color: #8f5536;
+}
+.highlight .se {
+  color: #8f5536;
+}
+.highlight .nn {
+  color: #f4bf75;
+}
+.highlight .nc {
+  color: #f4bf75;
+}
+.highlight .no {
+  color: #f4bf75;
+}
+.highlight .na {
+  color: #6a9fb5;
+}
+.highlight .m, .highlight .mf, .highlight .mh, .highlight .mi, .highlight .il, .highlight .mo, .highlight .mb, .highlight .mx {
+  color: #90a959;
+}
+.highlight .ss {
+  color: #90a959;
+}
+    </style>
+    <link href="stylesheets/screen.css" rel="stylesheet" media="screen" />
+    <link href="stylesheets/print.css" rel="stylesheet" media="print" />
+      <script src="javascripts/all.js"></script>
+  </head>
+
+  <body class="index" data-languages="[&quot;shell&quot;]">
+    <a href="#" id="nav-button">
+      <span>
+        NAV
+        <img src="images/navbar.png" />
+      </span>
+    </a>
+    <div class="tocify-wrapper">
+      <img src="images/logo.png" />
+        <div class="lang-selector">
+              <a href="#" data-language-name="shell">cURL</a>
+        </div>
+        <div class="search">
+          <input type="text" class="search" id="input-search" placeholder="Search">
+        </div>
+        <ul class="search-results"></ul>
+      <div id="toc">
+      </div>
+        <ul class="toc-footer">
+            <li><a href='https://www.socialmetrix.com/free-trial-quantum-en'>Sign Up to Quantum</a></li>
+        </ul>
+    </div>
+    <div class="page-wrapper">
+      <div class="dark-box"></div>
+      <div class="content">
+        <h1 id="introduction">Introduction</h1>
+
+<aside class="warning">
+This documentation is a work-in-progress, we&rsquo;re working hard to complete it the next weeks. If you have specific questions, please reach us <b>info [at] socialmetrix.com</b> so we can give you a properly answer.
+</aside>
+
+<p>Welcome to the <strong>Socialmetrix Quantum API!</strong> Quantum provides relevant information about audience behavior through actionable metrics focused in quantitative analysis, allowing you to designate which actions need to be taken to meet your goals.</p>
+
+<p>This documentation will help you through Quantum API, all its functionalities and endpoints, to make sure you have the best experience with our product.</p>
+
+<h3 id="understand-information-organization">Understand Information Organization</h3>
+
+<p>Your <strong>Account</strong> is the top element on the structure, as an <a href="#roles">Account Owner</a> you can create all elements </p>
+
+<p>Accessing your <a href="#roles">account</a>, you can create several <a href="#projects">projects</a>, on each project you can load profiles for <a href="#facebook">Facebook</a>, <a href="#twitter">Twitter</a>, <a href="#youtube">YouTube</a> and <a href="#instagram">Instagram</a>, on each profile you can query specific metrics for the Social Network, also you can add content to a <a href="#campaign">campaign</a> and access those as consolidate metrics.</p>
+
+<p><img alt="Quantum API Structure" src="images/api-structure.png" /></p>
+
+<h3 id="url-structure">URL Structure</h3>
+
+<p>Currently our API is on <strong>version 1</strong> and all HTTP requests are made using this base: <code class="prettyprint">https://api.quantum.socialmetrix.com/v1</code>.</p>
+
+<h1 id="authentication">Authentication</h1>
+
+<p>This API relies on <a href="https://jwt.io">Json Web Token (JWT)</a> as autorization/authentication mechanism, to issue a JWT you will need your Quantum API Secret.</p>
+
+<h2 id="getting-your-api-secret">Getting your API Secret</h2>
+
+<p>Follow these steps to obtain your API secret:</p>
+
+<p>1) Login at <a href="https://quantum.socialmetrix.com">Socialmetrix Quantum</a> using Facebook or Twitter and go to <strong>Settings</strong>:</p>
+
+<p><img alt="Quantum Settings" src="images/quantum-settings.png" /></p>
+
+<p>2) Select the <strong>API tab</strong> and copy your API Secret:</p>
+
+<p><img alt="Quantum API Secret" src="images/quantum-settings-api-secret.png" /></p>
+
+<aside class="warning">
+Please do not expose your API Secret - if an attacker have control of your API Secret, he/she will be able to delete all your accounts. <b>Keep it safe!</b>
+</aside>
+
+<h2 id="issuing-a-json-web-token">Issuing a Json Web Token</h2>
+
+<p>You need POST a json containing the <code class="prettyprint">&quot;method&quot;: “API-SECRET”</code> and your <code class="prettyprint">secret</code>.</p>
+<pre class="highlight shell"><code>curl -XPOST <span class="s1">'https://api.quantum.socialmetrix.com/login'</span> <span class="se">\</span>
+  -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+  -d <span class="s1">'{ "method":"API-SECRET",
+  "secret":"0220a22d27be69e4.........54aa9840e5c4136e"}'</span>
+</code></pre>
+
+<blockquote>
+<p>A valid response will contains relevant data of your account:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"jwt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJTTVgiLCJpYXQiOjE0.......zdkOGY5ZDFiMjM0ZiIsIm1ldGhvZCI6IkFwaVNlY3JldExvZ2luIn19.wcHGZaXN.......wMWAC7Vzg3r6I1jREqF_oIV8"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"user"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"806d642b4a6.......937d8f9d1b234f"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"firstName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"John"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"lastName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Smith"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"jsmith@socialmetrix.com"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"timezone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"America/New_York"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"role"</span><span class="p">:</span><span class="w"> </span><span class="s2">"OWNER"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"facebookAuth"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"userId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"557905121"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nt">"twitterAuth"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"userId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"15092087"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nt">"accountId"</span><span class="p">:</span><span class="w"> </span><span class="mi">790</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"projectIds"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+    </span><span class="nt">"createdAt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-07-23T19:53:13Z"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"lastLogin"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-11-25T01:55:31Z"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<h3 id="response">Response</h3>
+
+<p>From the response json you&rsquo;ll receive a lot information about the user, for authentication purposes, the most important values are:</p>
+
+<table><thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>accountId</strong></td>
+<td>All requests originates from an account</td>
+<td>790</td>
+</tr>
+<tr>
+<td><strong>jwt</strong></td>
+<td>The authentication token</td>
+<td>eyJhbGc&hellip;</td>
+</tr>
+</tbody></table>
+
+<aside class="notice">
+The JWT issued has a lifetime of 20 days. Please login again periodically.
+</aside>
+
+<p><br /></p>
+
+<h3 id="storing-jwt-for-convenience">Storing JWT for convenience</h3>
+
+<p>Store the value of <code class="prettyprint">jwt</code> on a variable, so you can follow along all the next examples without having to constantly edit each line:</p>
+
+<p><code>
+export <b>JWT</b>=&#39;eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJTTVgiLCJpYXQiOjE0....&#39;<br />
+export <b>ACCOUNT</b>=790
+</code></p>
+
+          <h1 id="projects">Projects</h1>
+
+<p>Any metric, profile or campaigns belongs to a project, so we need to known which project we want to work with. As our first interaction with the API.</p>
+
+<h2 id="list-all-projects">List all projects</h2>
+<pre class="highlight shell"><code>curl -XGET <span class="s2">"https://api.quantum.socialmetrix.com/v1/accounts/</span><span class="k">${</span><span class="nv">ACCOUNT</span><span class="k">}</span><span class="s2">/projects"</span> <span class="se">\</span>
+  -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+  -H <span class="s2">"X-Auth-Token: </span><span class="k">${</span><span class="nv">JWT</span><span class="k">}</span><span class="s2">"</span>
+</code></pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Demo"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"createdAt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-11-17T09:58:51Z"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"accountId"</span><span class="p">:</span><span class="w"> </span><span class="mi">790</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"isDemo"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"brands"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="err">...</span><span class="w"> </span><span class="err">omitted</span><span class="w"> </span><span class="err">...</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Telecom US Market"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"createdAt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-10-17T19:18:01Z"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"accountId"</span><span class="p">:</span><span class="w"> </span><span class="mi">790</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"isDemo"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"brands"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="err">...</span><span class="w"> </span><span class="err">omitted</span><span class="w"> </span><span class="err">...</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+
+<p>This endpoint has a complete list of projects and its profiles.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET /accounts/&lt;ACCOUNT&gt;/projects</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>ACCOUNT</strong></td>
+<td>The ID obtained from JWT response: <code class="prettyprint">user.accountId</code></td>
+<td>790</td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<p>The response contains an array of projects (object) with an <strong>id</strong>, <strong>name</strong> and another array <strong>brands</strong> containing <strong>profiles</strong>:</p>
+
+<table><thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>id</strong></td>
+<td>The project ID</td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>name</strong></td>
+<td>The project name, given by the user</td>
+<td>Demo</td>
+</tr>
+<tr>
+<td><strong>brands</strong></td>
+<td>An array containing all profiles belonging to this project</td>
+<td></td>
+</tr>
+</tbody></table>
+
+<h2 id="project-detail">Project Detail</h2>
+<pre class="highlight shell"><code><span class="c"># Selecting the Demo Project (id=0)</span>
+
+curl -XGET <span class="s2">"https://api.quantum.socialmetrix.com/v1/accounts/</span><span class="k">${</span><span class="nv">ACCOUNT</span><span class="k">}</span><span class="s2">/projects/0"</span> <span class="se">\</span>
+  -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+  -H <span class="s2">"X-Auth-Token: </span><span class="k">${</span><span class="nv">JWT</span><span class="k">}</span><span class="s2">"</span>
+</code></pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Demo"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"createdAt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-10-07T22:22:16Z"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"accountId"</span><span class="p">:</span><span class="w"> </span><span class="mi">1896</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"isDemo"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"brands"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"sourceType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"TWITTER"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"TWITTER_415859364"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Nike"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"source"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="nt">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"TWITTER"</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"415859364"</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://twitter.com/Nike"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="nt">"nextFetch"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"crawlingData"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="nt">"initialCrawlingDate"</span><span class="p">:</span><span class="w"> </span><span class="mi">1415119279</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"disabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="nt">"screenName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Nike"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"icon"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://pic.socialmetrix.com/twitter/415859364/picture"</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"sourceType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FACEBOOK"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FACEBOOK_15087023444"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Nike"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"source"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="nt">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FACEBOOK"</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"15087023444"</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.facebook.com/nike"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="nt">"nextFetch"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"crawlingData"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="nt">"initialCrawlingDate"</span><span class="p">:</span><span class="w"> </span><span class="mi">1399989600</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"disabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="nt">"username"</span><span class="p">:</span><span class="w"> </span><span class="s2">"nike"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"hasParent"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"icon"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://pic.socialmetrix.com/facebook/15087023444/picture"</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"sourceType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"YOUTUBE"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"YOUTUBE_UCUFgkRb0ZHc4Rpq15VRCICA"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Nike"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"source"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="nt">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"YOUTUBE"</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UCUFgkRb0ZHc4Rpq15VRCICA"</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://www.youtube.com/channel/UCUFgkRb0ZHc4Rpq15VRCICA"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="nt">"nextFetch"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"crawlingData"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="nt">"initialCrawlingDate"</span><span class="p">:</span><span class="w"> </span><span class="mi">1441304646</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"disabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="nt">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"icon"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://pic.socialmetrix.com/youtube/UCUFgkRb0ZHc4Rpq15VRCICA/picture"</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"sourceType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"INSTAGRAM"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"INSTAGRAM_13460080"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"nike"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"source"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="nt">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"INSTAGRAM"</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"13460080"</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://instagram.com/nike/"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="nt">"nextFetch"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"crawlingData"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="nt">"initialCrawlingDate"</span><span class="p">:</span><span class="w"> </span><span class="mi">1423748093</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"disabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="nt">"username"</span><span class="p">:</span><span class="w"> </span><span class="s2">"nike"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"icon"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://pic.socialmetrix.com/instagram/13460080/picture"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>This endpoint gives you information about the selected project. Including all profiles that belongs to this project. Knowing the <code class="prettyprint">source.id</code> value is necessary to request metrics.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET /accounts/&lt;ACCOUNT&gt;/projects/&lt;PROJECT&gt;</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>ACCOUNT</strong></td>
+<td>The ID obtained from JWT response: <code class="prettyprint">user.accountId</code></td>
+<td>790</td>
+</tr>
+<tr>
+<td><strong>PROJECT</strong></td>
+<td>The ID of desired project</td>
+<td>0</td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<p>Besides the <strong>id</strong> and <strong>name</strong> of the project, the most relevant part of response is the <strong>brands</strong> array of object which contains <strong>profiles</strong>:</p>
+
+<table><thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>id</strong></td>
+<td>A composite ID containing the <strong>source</strong> and its <strong>id</strong></td>
+<td>INSTAGRAM_13460080</td>
+</tr>
+<tr>
+<td><strong>name</strong></td>
+<td>Name of the Social Profile</td>
+<td>Nike</td>
+</tr>
+<tr>
+<td><strong>icon</strong></td>
+<td>Social Profile Icon/Photo url</td>
+<td><a href="https://pic.socialmetrix.com/instagram/13460080/picture">https://pic.socialmetrix&hellip;</a></td>
+</tr>
+<tr>
+<td><strong>username / screenName</strong></td>
+<td>Username or Screen Name for the Profile</td>
+<td>nike</td>
+</tr>
+<tr>
+<td><strong>source</strong></td>
+<td>Object containing profile&rsquo;s meta-data</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>crawlingData</strong></td>
+<td>Object containing crawling meta-data</td>
+<td></td>
+</tr>
+</tbody></table>
+
+<h3 id="source-object">Source Object</h3>
+
+<table><thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>id</strong></td>
+<td>ID on the social network</td>
+<td>13460080</td>
+</tr>
+<tr>
+<td><strong>kind</strong></td>
+<td>Supported social network, currently can be: FACEBOOK, TWITTER, YOUTUBE, INSTAGRAM</td>
+<td>INSTAGRAM</td>
+</tr>
+<tr>
+<td><strong>url</strong></td>
+<td>social network&rsquo;s profile url</td>
+<td>https://instagram.com/nike/</td>
+</tr>
+</tbody></table>
+
+<h3 id="crawlingdata-object">crawlingData Object</h3>
+
+<table><thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>initialCrawlingDate</strong></td>
+<td><a href="https://en.wikipedia.org/wiki/Epoch_(reference_date)">epoch</a> representation when data becomes available for this profile</td>
+<td>1423748093</td>
+</tr>
+<tr>
+<td><strong>disabled</strong></td>
+<td>If <code class="prettyprint">true</code> this profile is not active</td>
+<td>false</td>
+</tr>
+</tbody></table>
+
+          <h1 id="facebook">Facebook</h1>
+
+<h2 id="facebook-profile-summary">Facebook Profile Summary</h2>
+<pre class="highlight shell"><code>curl -XGET <span class="s2">"https://api.quantum.socialmetrix.com/v1/accounts/</span><span class="k">${</span><span class="nv">ACCOUNT</span><span class="k">}</span><span class="se">\</span><span class="s2">
+/projects/0/facebook/profiles/stat-summary?</span><span class="se">\</span><span class="s2">
+ids=15087023444,182162001806727&amp;since=2016-09-09&amp;until=2016-10-08"</span> <span class="se">\</span>
+  -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+  -H <span class="s2">"X-Auth-Token: </span><span class="k">${</span><span class="nv">JWT</span><span class="k">}</span><span class="s2">"</span>
+</code></pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"query"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/accounts/1896/projects/0/facebook/profiles/stat-summary"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"filters"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"timezone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"America/Argentina/Buenos_Aires"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"ids"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="s2">"182162001806727"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"15087023444"</span><span class="w">
+      </span><span class="p">],</span><span class="w">
+      </span><span class="nt">"since"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-09-09"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"until"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-10-08"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nt">"results"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"182162001806727"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"current"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="nt">"totalFans"</span><span class="p">:</span><span class="w"> </span><span class="mi">22611837</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"newFans"</span><span class="p">:</span><span class="w"> </span><span class="mi">172184</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"newPosts"</span><span class="p">:</span><span class="w"> </span><span class="mi">34</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"newInteractions"</span><span class="p">:</span><span class="w"> </span><span class="mi">94045</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"engagementRate"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0041750576</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="nt">"previous"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="nt">"totalFans"</span><span class="p">:</span><span class="w"> </span><span class="mi">22439653</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"newFans"</span><span class="p">:</span><span class="w"> </span><span class="mi">208958</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"newPosts"</span><span class="p">:</span><span class="w"> </span><span class="mi">29</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"newInteractions"</span><span class="p">:</span><span class="w"> </span><span class="mi">28519</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"engagementRate"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0012755521</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"15087023444"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"current"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="nt">"totalFans"</span><span class="p">:</span><span class="w"> </span><span class="mi">27003826</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"newFans"</span><span class="p">:</span><span class="w"> </span><span class="mi">289127</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"newPosts"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"newInteractions"</span><span class="p">:</span><span class="w"> </span><span class="mi">8833</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"engagementRate"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0003281974</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="nt">"previous"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="nt">"totalFans"</span><span class="p">:</span><span class="w"> </span><span class="mi">26722160</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"newFans"</span><span class="p">:</span><span class="w"> </span><span class="mi">1844729</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"newPosts"</span><span class="p">:</span><span class="w"> </span><span class="mi">16</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"newInteractions"</span><span class="p">:</span><span class="w"> </span><span class="mi">447742</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"engagementRate"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.017771263</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>This endpoint brings all the facebook pages that are listed on the project, among with the info about them. Here you can check the total number of fans, new fans, new posts, new interactions and the engagement rate of all the pages that were added to the account.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET /accounts/&lt;ACCOUNT&gt;/projects/&lt;PROJECT&gt;/facebook/profiles/stat-summary</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>ACCOUNT</strong></td>
+<td>The ID obtained from JWT response: <code class="prettyprint">user.accountId</code></td>
+<td>790</td>
+</tr>
+<tr>
+<td><strong>PROJECT</strong></td>
+<td>Current Project</td>
+<td>0</td>
+</tr>
+</tbody></table>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>ids</strong></td>
+<td>A comma-separated list of profiles ids belonging to the project</td>
+<td>15087023444,182162001806727</td>
+</tr>
+<tr>
+<td><strong>since</strong></td>
+<td>Starting date (inclusive)</td>
+<td>2016-09-09</td>
+</tr>
+<tr>
+<td><strong>until</strong></td>
+<td>Ending date (exclusive)</td>
+<td>2016-10-08</td>
+</tr>
+<tr>
+<td><strong><em>timezone</em></strong></td>
+<td>(Optional): Time-zone that my metrics should be calculated</td>
+<td>America/Argentina/Buenos_Aires</td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<p>The response contains a <code class="prettyprint">data</code> object per each profile <code class="prettyprint">id</code>, inside <code class="prettyprint">data.current</code> is contained the acutal date period and <code class="prettyprint">data.previous</code> contains the values for the same previous period. If you select a month, it will be the previous month, if select you select 15 days <em>(Jun/16 ~ Jun/30)</em>, it will be the previous 15 days <em>(Jun/01 ~ Jun/15)</em>. </p>
+
+<table><thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>totalFans</strong></td>
+<td>Number of fans (net) at the end of the selected period</td>
+<td>22611837</td>
+</tr>
+<tr>
+<td><strong>newFans</strong></td>
+<td>Number of fans gained in the selected period</td>
+<td>172184</td>
+</tr>
+<tr>
+<td><strong>newPosts</strong></td>
+<td>Posts created during the selected period. It is the sum of Admin and User Posts</td>
+<td>34</td>
+</tr>
+<tr>
+<td><strong>newInteractions</strong></td>
+<td>Sum of likes, comments and shares generated during the selected period</td>
+<td>94045</td>
+</tr>
+<tr>
+<td><strong>engagementRate</strong></td>
+<td>This indicator measures what portion of the page&rsquo;s audience, engaged with the published content</td>
+<td>0.0041750576</td>
+</tr>
+</tbody></table>
+
+          <h1 id="users">Users</h1>
+
+<h2 id="user-detail">User Detail</h2>
+<pre class="highlight shell"><code>curl <span class="s1">'https://quantum.socialmetrix.com/api/v1/accounts/1896/users/68a3450f0f2b20e8ab6ec2e2838b532b'</span> 
+</code></pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"68a3450f0f2b20e8ab6ec2e2838b532b"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"firstName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"John"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"lastName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Smith"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"johnsmitha@johnsmith.com"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"timezone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"America/Argentina/Buenos_Aires"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"role"</span><span class="p">:</span><span class="w"> </span><span class="s2">"OWNER"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"facebookAuth"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"userId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"936995519724667"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"EAAGZBqihd9k8BAORbA6EAlpOx32348J1PdwECGuKkhxDutmdqkskJb07DxLunw76kDeSN7lsBYqHTULVroMQhSvjjtgXntPybMDoJxYzUFU4Hho7d3jgCaJJSLtyz5EiWNYRPf5yZACwhhqypMRhheWZBp4q50ZD"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nt">"twitterAuth"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"accountId"</span><span class="p">:</span><span class="w"> </span><span class="mi">1896</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"projectIds"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nt">"createdAt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-10-07T22:22:16Z"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"lastLogin"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-10-09T17:02:32Z"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>This endpoint lists the project&rsquo;s users, passed as parameter on the URL as $USER. The parameters are: the user id, their first and last name, their email and timezone, and their role in the project, for example OWNER. </p>
+
+          <h1 id="usage">Usage</h1>
+
+<h2 id="limits-info">Limits info</h2>
+
+<p>This endpoint details the account&rsquo;s limits according to the user&rsquo;s plan. Here you can see how many campaigns, projects, profiles, swaps, users and fans fans the account currently has. </p>
+<pre class="highlight shell"><code>curl <span class="s1">'https://quantum.socialmetrix.com/api/v1/accounts/1896/limits/available'</span>
+</code></pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"campaigns"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"projects"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"profiles"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"swaps"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"users"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"fans"</span><span class="p">:</span><span class="w"> </span><span class="mi">600000</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<h2 id="billing-info">Billing info</h2>
+
+<p>This endpoint gives you all the billing information available. Here you can check whether or not the account is on its Trial period, the current billing amount in cents, the current period start and end, when is the next billing, and the plan that is currently active. </p>
+<pre class="highlight shell"><code>curl <span class="s1">'https://quantum.socialmetrix.com/api/v1/accounts/1896/billing-info'</span>
+</code></pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"accountId"</span><span class="p">:</span><span class="w"> </span><span class="mi">1896</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"isTrial"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"currentBillingAmountInCents"</span><span class="p">:</span><span class="w"> </span><span class="mi">9900</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"currentPeriodStart"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-10-07T22:22:15Z"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"currentPeriodEnd"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-10-21T22:22:15Z"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"nextBilling"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-10-21T22:22:15Z"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"plan"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Starter Monthly"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"priceInCents"</span><span class="p">:</span><span class="w"> </span><span class="mi">9900</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"intervalUnit"</span><span class="p">:</span><span class="w"> </span><span class="s2">"month"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"interval"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"trialIntervalUnit"</span><span class="p">:</span><span class="w"> </span><span class="s2">"day"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"trialInterval"</span><span class="p">:</span><span class="w"> </span><span class="mi">14</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"limits"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"projects"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"campaigns"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"profiles"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"swaps"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"users"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"fans"</span><span class="p">:</span><span class="w"> </span><span class="mi">600000</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nt">"handle"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0-0-0"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nt">"coupon"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"pendingCancellation"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"nextPlan"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"paymentType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"creditCard"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<h2 id="consumed-limits-info">Consumed limits info</h2>
+
+<p>This endpoint details everything that has been consumed by the account. It gives the number of  users, campaigns, swaps, projects, profiles and fans created by the account. </p>
+<pre class="highlight shell"><code>curl <span class="s1">'https://quantum.socialmetrix.com/api/v1/accounts/1896/limits/consumed'</span> 
+</code></pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"users"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"campaigns"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"swaps"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"projects"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"profiles"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"fans"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+          <h1 id="roles">Roles</h1>
+
+<table><thead>
+<tr>
+<th>Role</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>Account Owner</strong></td>
+<td>This role is responsible for the account, with permission to all actions, including <strong>billing</strong> and <strong>cancelation</strong></td>
+</tr>
+<tr>
+<td><strong>Manager</strong></td>
+<td>Responsible for creating <a href="#projects">Projects</a>, adding <a href="#profiles">Profiles</a>, inviting <a href="#users">Users</a>, etc</td>
+</tr>
+<tr>
+<td><strong>Analytics</strong></td>
+<td>This role can query any metric and add content to a campaign.</td>
+</tr>
+</tbody></table>
+
+          <h1 id="errors">Errors</h1>
+
+<aside class="notice">This error section is stored in a separate file in `includes/_errors.md`. Slate allows you to optionally separate out your docs into many files&hellip;just save them to the `includes` folder and add them to the top of your `index.md`&rsquo;s frontmatter. Files are included in the order listed.</aside>
+
+<p>The Kittn API uses the following error codes:</p>
+
+<table><thead>
+<tr>
+<th>Error Code</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>400</td>
+<td>Bad Request &ndash; Your request sucks</td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized &ndash; Your API key is wrong</td>
+</tr>
+<tr>
+<td>403</td>
+<td>Forbidden &ndash; The kitten requested is hidden for administrators only</td>
+</tr>
+<tr>
+<td>404</td>
+<td>Not Found &ndash; The specified kitten could not be found</td>
+</tr>
+<tr>
+<td>405</td>
+<td>Method Not Allowed &ndash; You tried to access a kitten with an invalid method</td>
+</tr>
+<tr>
+<td>406</td>
+<td>Not Acceptable &ndash; You requested a format that isn&rsquo;t json</td>
+</tr>
+<tr>
+<td>410</td>
+<td>Gone &ndash; The kitten requested has been removed from our servers</td>
+</tr>
+<tr>
+<td>418</td>
+<td>I&rsquo;m a teapot</td>
+</tr>
+<tr>
+<td>429</td>
+<td>Too Many Requests &ndash; You&rsquo;re requesting too many kittens! Slow down!</td>
+</tr>
+<tr>
+<td>500</td>
+<td>Internal Server Error &ndash; We had a problem with our server. Try again later.</td>
+</tr>
+<tr>
+<td>503</td>
+<td>Service Unavailable &ndash; We&rsquo;re temporarially offline for maintanance. Please try again later.</td>
+</tr>
+</tbody></table>
+
+          <h1 id="related-projects">Related Projects</h1>
+
+<p>We receive a few contributions to use Quantum, we thanks those contributions and encorage our customers to publish their work. If you create something cool with our API, please drop us a line <strong>info [at] socialmetrix.com</strong></p>
+
+<p>Here are the most relevant projects:</p>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><a href="https://github.com/socialmetrix/quantum_cli/">Quantum Cli</a></td>
+<td>A small command line tool that allows you to manage projects and profiles. Very handy when you have to create projects in bulk.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/gdmachado/quantumpy">Quantum Python API</a></td>
+<td>An ultra simple wrapper for the Socialmetrix Quantum API, with basic functionality.</td>
+</tr>
+</tbody></table>
+
+<aside class="success">These projects are community contribution and comes with no guarantee.</aside>
+
+      </div>
+      <div class="dark-box">
+          <div class="lang-selector">
+                <a href="#" data-language-name="shell">cURL</a>
+          </div>
+      </div>
+    </div>
+  </body>
+</html>
