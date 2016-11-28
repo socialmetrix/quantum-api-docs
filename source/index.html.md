@@ -1,17 +1,15 @@
 ---
-title: Quantum API Reference
+title: WIP - Quantum API Reference
 
 language_tabs:
   - shell: cURL
   
 toc_footers:
-  - <a href='https://www.socialmetrix.com/free-trial-quantum-en'>Sign Up for a Developer Key</a>
-  - <a href='https://github.com/tripit/slate'>Powered by Slate</a>
+  - <a href='https://www.socialmetrix.com/free-trial-quantum-en'>Sign Up to Quantum</a>
 
 includes:
   - projects
   - facebook
-  - kittens
   - users
   - usage
   - others
@@ -22,6 +20,11 @@ search: true
 ---
 
 # Introduction
+
+<aside class="warning">
+This documentation is a work-in-progress, we're working hard to complete it the next weeks. If you have specific questions, please reach us <b>info [at] socialmetrix.com</b> so we can give you a properly answer.
+</aside>
+
 
 Welcome to the **Socialmetrix Quantum API!** Quantum provides relevant information about audience behavior through actionable metrics focused in quantitative analysis, allowing you to designate which actions need to be taken to meet your goals.
 
@@ -47,11 +50,11 @@ This API relies on [Json Web Token (JWT)](https://jwt.io) as autorization/authen
 
 Follow these steps to obtain your API secret:
 
-1- Login at [Socialmetrix Quantum](https://quantum.socialmetrix.com) using Facebook or Twitter and go to **Settings**:
+1) Login at [Socialmetrix Quantum](https://quantum.socialmetrix.com) using Facebook or Twitter and go to **Settings**:
 
 ![Quantum Settings](quantum-settings.png)
 
-2- Select the **API tab** and copy your API Secret:
+2) Select the **API tab** and copy your API Secret:
 
 ![Quantum API Secret](quantum-settings-api-secret.png)
 
@@ -116,6 +119,6 @@ The JWT issued has a lifetime of 20 days. Please login again periodically.
 Store the value of `jwt` on a variable, so you can follow along all the next examples without having to constantly edit each line:
 
 <code>
-export <b>JWT</b>='eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJTTVgiLCJpYXQiOjE0....'
+export <b>JWT</b>='eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJTTVgiLCJpYXQiOjE0....'<br />
 export <b>ACCOUNT</b>=790
 </code>

@@ -2,9 +2,11 @@
 
 ## Facebook Profile Summary 
 ```shell
-curl 'https://quantum.socialmetrix.com/api/v1/accounts/1896/projects/0/facebook/profiles/stat-summary?ids=15087023444,182162001806727&since=2016-09-09&timezone=America%2FArgentina%2FBuenos_Aires&until=2016-10-08' \
-  -H "Content-Type: application/json" \ 
-  -d '{ "method":"API-SECRET", "secret":"0220a22d27be69e4.........54aa9840e5c4136e"}'
+curl -XGET "https://api.quantum.socialmetrix.com/v1/accounts/${ACCOUNT}\
+/projects/0/facebook/profiles/stat-summary?\
+ids=15087023444,182162001806727&since=2016-09-09&until=2016-10-08" \
+  -H "Content-Type: application/json" \
+  -H "X-Auth-Token: ${JWT}"
 ```
 
 > The above command returns JSON structured like this:
@@ -43,7 +45,25 @@ curl 'https://quantum.socialmetrix.com/api/v1/accounts/1896/projects/0/facebook/
         }
       }
     },
-    
+    {
+      "id": "15087023444",
+      "data": {
+        "current": {
+          "totalFans": 27003826,
+          "newFans": 289127,
+          "newPosts": 1,
+          "newInteractions": 8833,
+          "engagementRate": 0.0003281974
+        },
+        "previous": {
+          "totalFans": 26722160,
+          "newFans": 1844729,
+          "newPosts": 16,
+          "newInteractions": 447742,
+          "engagementRate": 0.017771263
+        }
+      }
+    }
   ]
 }
 ```
@@ -67,18 +87,18 @@ Parameter | Description | Example
 --------- | ----------- | -----------
 **ids** | A comma-separated list of profiles ids belonging to the project | 15087023444,182162001806727
 **since** | Starting date (inclusive) | 2016-09-09
-**until** | Ending date (exclusive) | 2016-09-09
+**until** | Ending date (exclusive) | 2016-10-08
 ***timezone*** | (Optional): Time-zone that my metrics should be calculated | America/Argentina/Buenos_Aires
 
 ### Response
 
-The response contains to main objects per **id**, `data.current` contains the acutal period and `data.previous` contains the values for the same previous period lenght.
+The response contains a `data` object per each profile `id`, inside `data.current` is contained the acutal date period and `data.previous` contains the values for the same previous period. If you select a month, it will be the previous month, if select you select 15 days *(Jun/16 ~ Jun/30)*, it will be the previous 15 days *(Jun/01 ~ Jun/15)*. 
 
 Field | Description | Example
 --------- | ----------- | -----------
-**totalFans** | The total amount of fans on the period | 22611837
-**newFans** | New fans gained/lost in the period | 172184
-**newPosts** | New posts published in the period | 34
-**newInteractions** | New interactions in the period | 94045
-**engagementRate** | Engagement rate generated in the period | 0.0041750576
+**totalFans** | Number of fans (net) at the end of the selected period | 22611837
+**newFans** | Number of fans gained in the selected period | 172184
+**newPosts** | Posts created during the selected period. It is the sum of Admin and User Posts | 34
+**newInteractions** | Sum of likes, comments and shares generated during the selected period | 94045
+**engagementRate** | This indicator measures what portion of the page's audience, engaged with the published content | 0.0041750576
 
