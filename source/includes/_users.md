@@ -37,14 +37,14 @@ This endpoint lists the project's users, passed as parameter on the URL as $USER
 
 ### HTTP Request
 
-`GET /accounts/<ACCOUNT>/users/$USER`
+`GET /accounts/<ACCOUNT>/users/<USER>`
 
 ### URL Parameters
 
 Parameter | Description | Example
 --------- | ----------- | -----------
 **ACCOUNT** | The ID obtained from JWT response: `user.accountId` | 790
-**PROJECT** | Current Project | 0
+**USER** | Current user | 68a3450f0f2b20e8ab6ec2e2838b532b
 
 ### Query Parameters
 
