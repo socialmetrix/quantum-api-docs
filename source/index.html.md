@@ -10,6 +10,9 @@ toc_footers:
 includes:
   - projects
   - facebook
+  - facebook_profile_summary
+  - facebook_profile_interactions
+  - facebook_profile_posts_ranking_interactions
   - users
   - usage
   - others
