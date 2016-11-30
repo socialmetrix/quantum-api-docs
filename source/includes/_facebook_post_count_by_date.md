@@ -1,4 +1,4 @@
-### Post counter by date  
+##fb.Post count by date  
 ```shell
 curl -XGET "https://api.quantum.socialmetrix.com/v1/accounts/${ACCOUNT}\
 /projects/${PROJECT}/facebook/profiles/posts/count/date?\
