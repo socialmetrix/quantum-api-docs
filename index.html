@@ -535,7 +535,7 @@ curl -XGET <span class="s2">"https://api.quantum.socialmetrix.com/v1/accounts/</
 
           <h2 id="fb-profile-summary">fb.Profile Summary</h2>
 <pre class="highlight shell"><code>curl -XGET <span class="s2">"https://api.quantum.socialmetrix.com/v1/accounts/</span><span class="k">${</span><span class="nv">ACCOUNT</span><span class="k">}</span><span class="se">\</span><span class="s2">
-/projects/0/facebook/profiles/stat-summary?</span><span class="se">\</span><span class="s2">
+/projects/</span><span class="k">${</span><span class="nv">PROJECT</span><span class="k">}</span><span class="s2">/facebook/profiles/stat-summary?</span><span class="se">\</span><span class="s2">
 ids=15087023444,182162001806727&amp;since=2016-09-09&amp;until=2016-10-08"</span> <span class="se">\</span>
   -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
   -H <span class="s2">"X-Auth-Token: </span><span class="k">${</span><span class="nv">JWT</span><span class="k">}</span><span class="s2">"</span>
@@ -1085,10 +1085,319 @@ ids=15087023444&amp;since=2016-09-09&amp;until=2016-10-08&amp;owner=admin"</span
 </tr>
 </tbody></table>
 
+          <h2 id="fb-post-count-by-date">fb.Post count by date</h2>
+<pre class="highlight shell"><code>curl -XGET <span class="s2">"https://api.quantum.socialmetrix.com/v1/accounts/</span><span class="k">${</span><span class="nv">ACCOUNT</span><span class="k">}</span><span class="se">\</span><span class="s2">
+/projects/</span><span class="k">${</span><span class="nv">PROJECT</span><span class="k">}</span><span class="s2">/facebook/profiles/posts/count/date?</span><span class="se">\</span><span class="s2">
+ids=15087023444,182162001806727&amp;since=2016-09-09&amp;until=2016-10-08"</span> <span class="se">\</span>
+  -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+  -H <span class="s2">"X-Auth-Token: </span><span class="k">${</span><span class="nv">JWT</span><span class="k">}</span><span class="s2">"</span>
+</code></pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">  
+   </span><span class="nt">"query"</span><span class="p">:{</span><span class="w">  
+      </span><span class="nt">"id"</span><span class="p">:</span><span class="s2">"/accounts/1896/projects/0/facebook/profiles/posts/count/date"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"filters"</span><span class="p">:{</span><span class="w">  
+         </span><span class="nt">"timezone"</span><span class="p">:</span><span class="s2">"America/Argentina/Buenos_Aires"</span><span class="p">,</span><span class="w">
+         </span><span class="nt">"ids"</span><span class="p">:[</span><span class="w">  
+            </span><span class="s2">"182162001806727"</span><span class="w">
+         </span><span class="p">],</span><span class="w">
+         </span><span class="nt">"since"</span><span class="p">:</span><span class="s2">"2016-10-30"</span><span class="p">,</span><span class="w">
+         </span><span class="nt">"until"</span><span class="p">:</span><span class="s2">"2016-11-28"</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="nt">"period"</span><span class="p">:{</span><span class="w">  
+         </span><span class="nt">"id"</span><span class="p">:</span><span class="s2">"1d"</span><span class="p">,</span><span class="w">
+         </span><span class="nt">"duration"</span><span class="p">:</span><span class="mi">86400</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="nt">"results"</span><span class="p">:[</span><span class="w">  
+      </span><span class="p">{</span><span class="w">  
+         </span><span class="nt">"id"</span><span class="p">:</span><span class="s2">"182162001806727"</span><span class="p">,</span><span class="w">
+         </span><span class="nt">"data"</span><span class="p">:[</span><span class="w">  
+            </span><span class="mi">1</span><span class="p">,</span><span class="w">
+            </span><span class="mi">1</span><span class="p">,</span><span class="w">
+            </span><span class="mi">1</span><span class="p">,</span><span class="w">
+            </span><span class="mi">1</span><span class="p">,</span><span class="w">
+            </span><span class="mi">1</span><span class="p">,</span><span class="w">
+            </span><span class="mi">2</span><span class="p">,</span><span class="w">
+            </span><span class="mi">1</span><span class="p">,</span><span class="w">
+             </span><span class="err">...</span><span class="w"> </span><span class="err">omitted</span><span class="w"> </span><span class="err">...</span><span class="w">
+         </span><span class="p">],</span><span class="w">
+         </span><span class="nt">"currentTotal"</span><span class="p">:</span><span class="mi">26</span><span class="p">,</span><span class="w">
+         </span><span class="nt">"previousTotal"</span><span class="p">:</span><span class="mi">30</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+   </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>This endpoint gives information about the quantity of posted content from a Facebook page in a given period,   day by day, comparing them with the previous period. The analysis can be refined using four filters (statuses, links, videos or photos) that give you the exact number of posts of that type each day, and the total count during the current and previous periods.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET /accounts/&lt;ACCOUNT&gt;/projects/&lt;PROJECT&gt;/facebook/profiles/posts/count/date</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>ACCOUNT</strong></td>
+<td>The ID obtained from JWT response: <code class="prettyprint">user.accountId</code></td>
+<td>790</td>
+</tr>
+<tr>
+<td><strong>PROJECT</strong></td>
+<td>Current Project</td>
+<td>0</td>
+</tr>
+</tbody></table>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>ids</strong></td>
+<td>A comma-separated list of profiles ids belonging to the project</td>
+<td>15087023444,182162001806727</td>
+</tr>
+<tr>
+<td><strong>since</strong></td>
+<td>Starting date (inclusive)</td>
+<td>2016-09-09</td>
+</tr>
+<tr>
+<td><strong>until</strong></td>
+<td>Ending date (exclusive)</td>
+<td>2016-10-08</td>
+</tr>
+<tr>
+<td><strong>owner</strong></td>
+<td>Owner of the project</td>
+<td>admin</td>
+</tr>
+<tr>
+<td><strong><em>timezone</em></strong></td>
+<td>(Optional): Time-zone that my metrics should be calculated</td>
+<td>America/Argentina/Buenos_Aires</td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<p>The response contains a <code class="prettyprint">data</code> object per each profile <code class="prettyprint">id</code>, inside <code class="prettyprint">data.current</code> is contained the acutal date period and <code class="prettyprint">data.previous</code> contains the values for the same previous period. If you select a month, it will be the previous month, if select you select 15 days <em>(Jun/16 ~ Jun/30)</em>, it will be the previous 15 days <em>(Jun/01 ~ Jun/15)</em>. </p>
+
+<table><thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>currentTotal</strong></td>
+<td>Total posts created during the current period.</td>
+<td>26</td>
+</tr>
+<tr>
+<td><strong>previousTotal</strong></td>
+<td>Total posts created during the previous period.</td>
+<td>20</td>
+</tr>
+</tbody></table>
+
+<h3 id="filters">Filters</h3>
+
+<p>This endpoint allows you to sellect four additional filters. Each of them returns the number of statuses, links, videos or photos posted during the current and previous periods. </p>
+
+<table><thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>statuses</strong></td>
+<td>Current or previously posted statuses.</td>
+<td>18</td>
+</tr>
+<tr>
+<td><strong>links</strong></td>
+<td>Current or previously posted links.</td>
+<td>20</td>
+</tr>
+<tr>
+<td><strong>videos</strong></td>
+<td>Current or previously posted videos.</td>
+<td>15</td>
+</tr>
+<tr>
+<td><strong>photos</strong></td>
+<td>Current or previously posted photos.</td>
+<td>12</td>
+</tr>
+</tbody></table>
+
+          <h2 id="fb-post-count-by-type">fb.Post count by type</h2>
+<pre class="highlight shell"><code>curl -XGET <span class="s2">"https://api.quantum.socialmetrix.com/v1/accounts/</span><span class="k">${</span><span class="nv">ACCOUNT</span><span class="k">}</span><span class="se">\</span><span class="s2">
+/projects/</span><span class="k">${</span><span class="nv">PROJECT</span><span class="k">}</span><span class="s2">/facebook/profiles/posts/count/type?</span><span class="se">\</span><span class="s2">
+ids=15087023444,182162001806727&amp;since=2016-09-09&amp;until=2016-10-08"</span> <span class="se">\</span>
+  -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+  -H <span class="s2">"X-Auth-Token: </span><span class="k">${</span><span class="nv">JWT</span><span class="k">}</span><span class="s2">"</span>
+</code></pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">  
+   </span><span class="nt">"query"</span><span class="p">:{</span><span class="w">  
+      </span><span class="nt">"id"</span><span class="p">:</span><span class="s2">"/accounts/&lt;ACCOUNT&gt;/projects/&lt;PROJECT&gt;/facebook/profiles/posts/count/type"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"filters"</span><span class="p">:{</span><span class="w">  
+         </span><span class="nt">"timezone"</span><span class="p">:</span><span class="s2">"America/Argentina/Buenos_Aires"</span><span class="p">,</span><span class="w">
+         </span><span class="nt">"ids"</span><span class="p">:[</span><span class="w">  
+            </span><span class="s2">"32654646532"</span><span class="w">
+         </span><span class="p">],</span><span class="w">
+         </span><span class="nt">"since"</span><span class="p">:</span><span class="s2">"2016-10-30"</span><span class="p">,</span><span class="w">
+         </span><span class="nt">"until"</span><span class="p">:</span><span class="s2">"2016-11-28"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="nt">"results"</span><span class="p">:[</span><span class="w">  
+      </span><span class="p">{</span><span class="w">  
+         </span><span class="nt">"id"</span><span class="p">:</span><span class="s2">"182162001806727"</span><span class="p">,</span><span class="w">
+         </span><span class="nt">"data"</span><span class="p">:{</span><span class="w">  
+            </span><span class="nt">"current"</span><span class="p">:{</span><span class="w">  
+               </span><span class="nt">"statuses"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="w">
+               </span><span class="nt">"links"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="w">
+               </span><span class="nt">"videos"</span><span class="p">:</span><span class="mi">8</span><span class="p">,</span><span class="w">
+               </span><span class="nt">"photos"</span><span class="p">:</span><span class="mi">18</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="nt">"previous"</span><span class="p">:{</span><span class="w">  
+               </span><span class="nt">"statuses"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="w">
+               </span><span class="nt">"links"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="w">
+               </span><span class="nt">"videos"</span><span class="p">:</span><span class="mi">13</span><span class="p">,</span><span class="w">
+               </span><span class="nt">"photos"</span><span class="p">:</span><span class="mi">17</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+         </span><span class="p">}</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+   </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>This endpoint gives information about the quantity of current and previously posted content from a Facebook page according to their type: statuses, links, videos or photos.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET /accounts/&lt;ACCOUNT&gt;/projects/&lt;PROJECT&gt;/facebook/profiles/posts/count/type</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>ACCOUNT</strong></td>
+<td>The ID obtained from JWT response: <code class="prettyprint">user.accountId</code></td>
+<td>790</td>
+</tr>
+<tr>
+<td><strong>PROJECT</strong></td>
+<td>Current Project</td>
+<td>0</td>
+</tr>
+</tbody></table>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>ids</strong></td>
+<td>A comma-separated list of profiles ids belonging to the project</td>
+<td>15087023444,182162001806727</td>
+</tr>
+<tr>
+<td><strong>since</strong></td>
+<td>Starting date (inclusive)</td>
+<td>2016-09-09</td>
+</tr>
+<tr>
+<td><strong>until</strong></td>
+<td>Ending date (exclusive)</td>
+<td>2016-10-08</td>
+</tr>
+<tr>
+<td><strong>owner</strong></td>
+<td>Owner of the project</td>
+<td>admin</td>
+</tr>
+<tr>
+<td><strong><em>timezone</em></strong></td>
+<td>(Optional): Time-zone that my metrics should be calculated</td>
+<td>America/Argentina/Buenos_Aires</td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<p>The response contains a <code class="prettyprint">data</code> object per each profile <code class="prettyprint">id</code>, inside <code class="prettyprint">data.current</code> is contained the acutal date period and <code class="prettyprint">data.previous</code> contains the values for the same previous period. If you select a month, it will be the previous month, if select you select 15 days <em>(Jun/16 ~ Jun/30)</em>, it will be the previous 15 days <em>(Jun/01 ~ Jun/15)</em>. </p>
+
+<table><thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>statuses</strong></td>
+<td>Current or previously posted statuses.</td>
+<td>18</td>
+</tr>
+<tr>
+<td><strong>links</strong></td>
+<td>Current or previously posted links.</td>
+<td>20</td>
+</tr>
+<tr>
+<td><strong>videos</strong></td>
+<td>Current or previously posted videos.</td>
+<td>15</td>
+</tr>
+<tr>
+<td><strong>photos</strong></td>
+<td>Current or previously posted photos.</td>
+<td>12</td>
+</tr>
+</tbody></table>
+
           <h1 id="users">Users</h1>
 
 <h2 id="user-detail">User Detail</h2>
-<pre class="highlight shell"><code>curl <span class="s1">'https://quantum.socialmetrix.com/api/v1/accounts/1896/users/68a3450f0f2b20e8ab6ec2e2838b532b'</span> 
+<pre class="highlight shell"><code>curl -XGET <span class="s1">'https://quantum.socialmetrix.com/api/v1/accounts/${ACCOUNT}/users/${USER}'</span><span class="se">\</span>
+  -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+  -H <span class="s2">"X-Auth-Token: </span><span class="k">${</span><span class="nv">JWT</span><span class="k">}</span><span class="s2">"</span>
 </code></pre>
 
 <blockquote>
@@ -1098,7 +1407,7 @@ ids=15087023444&amp;since=2016-09-09&amp;until=2016-10-08&amp;owner=admin"</span
   </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"68a3450f0f2b20e8ab6ec2e2838b532b"</span><span class="p">,</span><span class="w">
   </span><span class="nt">"firstName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"John"</span><span class="p">,</span><span class="w">
   </span><span class="nt">"lastName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Smith"</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"johnsmitha@johnsmith.com"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"johnsmith@johnsmith.com"</span><span class="p">,</span><span class="w">
   </span><span class="nt">"timezone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"America/Argentina/Buenos_Aires"</span><span class="p">,</span><span class="w">
   </span><span class="nt">"role"</span><span class="p">:</span><span class="w"> </span><span class="s2">"OWNER"</span><span class="p">,</span><span class="w">
   </span><span class="nt">"facebookAuth"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
@@ -1106,7 +1415,7 @@ ids=15087023444&amp;since=2016-09-09&amp;until=2016-10-08&amp;owner=admin"</span
     </span><span class="nt">"token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"EAAGZBqihd9k8BAORbA6EAlpOx32348J1PdwECGuKkhxDutmdqkskJb07DxLunw76kDeSN7lsBYqHTULVroMQhSvjjtgXntPybMDoJxYzUFU4Hho7d3jgCaJJSLtyz5EiWNYRPf5yZACwhhqypMRhheWZBp4q50ZD"</span><span class="w">
   </span><span class="p">},</span><span class="w">
   </span><span class="nt">"twitterAuth"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"accountId"</span><span class="p">:</span><span class="w"> </span><span class="mi">1896</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"accountId"</span><span class="p">:</span><span class="w"> </span><span class="err">ACCOUNT</span><span class="w"> </span><span class="err">ID</span><span class="p">,</span><span class="w">
   </span><span class="nt">"projectIds"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
 
   </span><span class="p">],</span><span class="w">
@@ -1117,12 +1426,101 @@ ids=15087023444&amp;since=2016-09-09&amp;until=2016-10-08&amp;owner=admin"</span
 
 <p>This endpoint lists the project&rsquo;s users, passed as parameter on the URL as $USER. The parameters are: the user id, their first and last name, their email and timezone, and their role in the project, for example OWNER. </p>
 
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET /accounts/&lt;ACCOUNT&gt;/users/&lt;USER&gt;</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>ACCOUNT</strong></td>
+<td>The ID obtained from JWT response: <code class="prettyprint">user.accountId</code></td>
+<td>790</td>
+</tr>
+<tr>
+<td><strong>USER</strong></td>
+<td>Current user</td>
+<td>68a3450f0f2b20e8ab6ec2e2838b532b</td>
+</tr>
+</tbody></table>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>ids</strong></td>
+<td>A comma-separated list of profiles ids belonging to the project</td>
+<td>15087023444,182162001806727</td>
+</tr>
+<tr>
+<td><strong>since</strong></td>
+<td>Starting date (inclusive)</td>
+<td>2016-09-09</td>
+</tr>
+<tr>
+<td><strong>until</strong></td>
+<td>Ending date (exclusive)</td>
+<td>2016-10-08</td>
+</tr>
+<tr>
+<td><strong><em>timezone</em></strong></td>
+<td>(Optional): Time-zone that my metrics should be calculated</td>
+<td>America/Argentina/Buenos_Aires</td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<p>The response contains a <code class="prettyprint">data</code> object per each profile <code class="prettyprint">id</code>, inside <code class="prettyprint">data.current</code> is contained the acutal date period and <code class="prettyprint">data.previous</code> contains the values for the same previous period. If you select a month, it will be the previous month, if select you select 15 days <em>(Jun/16 ~ Jun/30)</em>, it will be the previous 15 days <em>(Jun/01 ~ Jun/15)</em>. </p>
+
+<table><thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>firstName</strong></td>
+<td>User&rsquo;s <strong>first name</strong>.</td>
+<td>John</td>
+</tr>
+<tr>
+<td><strong>lastName</strong></td>
+<td>User&rsquo;s <strong>last name</strong>.</td>
+<td>Smith</td>
+</tr>
+<tr>
+<td><strong>email</strong></td>
+<td>User&rsquo;s <strong>email</strong>.</td>
+<td>johnsmith@johnsmith.com</td>
+</tr>
+<tr>
+<td><strong>role</strong></td>
+<td>User&rsquo;s <strong>role</strong> in the project.</td>
+<td>OWNER</td>
+</tr>
+</tbody></table>
+
           <h1 id="usage">Usage</h1>
 
 <h2 id="limits-info">Limits info</h2>
-
-<p>This endpoint details the account&rsquo;s limits according to the user&rsquo;s plan. Here you can see how many campaigns, projects, profiles, swaps, users and fans fans the account currently has. </p>
-<pre class="highlight shell"><code>curl <span class="s1">'https://quantum.socialmetrix.com/api/v1/accounts/1896/limits/available'</span>
+<pre class="highlight shell"><code>curl -XGET <span class="s2">"https://api.quantum.socialmetrix.com/v1/accounts/</span><span class="k">${</span><span class="nv">ACCOUNT</span><span class="k">}</span><span class="s2">/limits/available"</span> <span class="se">\</span>
+  -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+  -H <span class="s2">"X-Auth-Token: </span><span class="k">${</span><span class="nv">JWT</span><span class="k">}</span><span class="s2">"</span>
 </code></pre>
 
 <blockquote>
@@ -1138,21 +1536,117 @@ ids=15087023444&amp;since=2016-09-09&amp;until=2016-10-08&amp;owner=admin"</span
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 
-<h2 id="billing-info">Billing info</h2>
+<p>This endpoint details the account&rsquo;s limits according to the user&rsquo;s plan. Here you can see how many campaigns, projects, profiles, swaps, users and fans fans the account currently has. </p>
 
-<p>This endpoint gives you all the billing information available. Here you can check whether or not the account is on its Trial period, the current billing amount in cents, the current period start and end, when is the next billing, and the plan that is currently active. </p>
-<pre class="highlight shell"><code>curl <span class="s1">'https://quantum.socialmetrix.com/api/v1/accounts/1896/billing-info'</span>
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET &#39;/accounts/&lt;ACCOUNT&gt;/limits/available&#39;</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>ACCOUNT</strong></td>
+<td>The ID obtained from JWT response: <code class="prettyprint">user.accountId</code></td>
+<td>790</td>
+</tr>
+</tbody></table>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>ids</strong></td>
+<td>A comma-separated list of profiles ids belonging to the project</td>
+<td>15087023444,182162001806727</td>
+</tr>
+<tr>
+<td><strong>since</strong></td>
+<td>Starting date (inclusive)</td>
+<td>2016-09-09</td>
+</tr>
+<tr>
+<td><strong>until</strong></td>
+<td>Ending date (exclusive)</td>
+<td>2016-10-08</td>
+</tr>
+<tr>
+<td><strong><em>timezone</em></strong></td>
+<td>(Optional): Time-zone that my metrics should be calculated</td>
+<td>America/Argentina/Buenos_Aires</td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<p>The response contains a <code class="prettyprint">data</code> object per each profile <code class="prettyprint">id</code>, inside <code class="prettyprint">data.current</code> is contained the acutal date period and <code class="prettyprint">data.previous</code> contains the values for the same previous period. If you select a month, it will be the previous month, if select you select 15 days <em>(Jun/16 ~ Jun/30)</em>, it will be the previous 15 days <em>(Jun/01 ~ Jun/15)</em>. </p>
+
+<table><thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>users</strong></td>
+<td>Number of <strong>users</strong> in the selected period.</td>
+<td>2</td>
+</tr>
+<tr>
+<td><strong>campaigns</strong></td>
+<td>Number of <strong>campaigns</strong> in the selected period.</td>
+<td>2</td>
+</tr>
+<tr>
+<td><strong>projects</strong></td>
+<td>Number of <strong>projects</strong> in the selected period.</td>
+<td>8</td>
+</tr>
+<tr>
+<td><strong>profiles</strong></td>
+<td>Number of <strong>profiles</strong> in the selected period.</td>
+<td>6</td>
+</tr>
+<tr>
+<td><strong>swaps</strong></td>
+<td>Number of profile changes that can be done on the project. Each account has a swaps limit per month.</td>
+<td>2</td>
+</tr>
+<tr>
+<td><strong>fans</strong></td>
+<td>Number of <strong>fans</strong> in the selected period.</td>
+<td>65000</td>
+</tr>
+</tbody></table>
+
+<h2 id="billing-info">Billing info</h2>
+<pre class="highlight shell"><code>curl -XGET <span class="s2">"https://api.quantum.socialmetrix.com/v1/accounts/</span><span class="k">${</span><span class="nv">ACCOUNT</span><span class="k">}</span><span class="s2">/billing-info"</span> <span class="se">\</span>
+  -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+  -H <span class="s2">"X-Auth-Token: </span><span class="k">${</span><span class="nv">JWT</span><span class="k">}</span><span class="s2">"</span>
 </code></pre>
 
 <blockquote>
 <p>The above command returns JSON structured like this:</p>
 </blockquote>
-<pre class="highlight json"><code><span class="p">{</span><span class="w">
-  </span><span class="nt">"accountId"</span><span class="p">:</span><span class="w"> </span><span class="mi">1896</span><span class="p">,</span><span class="w">
+<pre class="highlight json"><code><span class="p">{</span><span class="w">   
+  </span><span class="nt">"accountId"</span><span class="p">:</span><span class="w"> </span><span class="err">ACCOUNT</span><span class="p">,</span><span class="w">
   </span><span class="nt">"isTrial"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
   </span><span class="nt">"currentBillingAmountInCents"</span><span class="p">:</span><span class="w"> </span><span class="mi">9900</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"currentPeriodStart"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-10-07T22:22:15Z"</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"currentPeriodEnd"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-10-21T22:22:15Z"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"currentPeriodStart"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-10-07T22:22:15"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"currentPeriodEnd"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-10-21T22:22:15"</span><span class="p">,</span><span class="w">
   </span><span class="nt">"nextBilling"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-10-21T22:22:15Z"</span><span class="p">,</span><span class="w">
   </span><span class="nt">"plan"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
     </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Starter Monthly"</span><span class="p">,</span><span class="w">
@@ -1171,6 +1665,7 @@ ids=15087023444&amp;since=2016-09-09&amp;until=2016-10-08&amp;owner=admin"</span
     </span><span class="p">},</span><span class="w">
     </span><span class="nt">"handle"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0-0-0"</span><span class="w">
   </span><span class="p">},</span><span class="w">
+
   </span><span class="nt">"coupon"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
   </span><span class="nt">"pendingCancellation"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
   </span><span class="nt">"nextPlan"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
@@ -1178,10 +1673,116 @@ ids=15087023444&amp;since=2016-09-09&amp;until=2016-10-08&amp;owner=admin"</span
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 
-<h2 id="consumed-limits-info">Consumed limits info</h2>
+<p>This endpoint gives you all the billing information available. Here you can check whether or not the account is on its Trial period, the current billing amount in cents, the current period start and end, when is the next billing, and the plan that is currently active. </p>
 
-<p>This endpoint details everything that has been consumed by the account. It gives the number of  users, campaigns, swaps, projects, profiles and fans created by the account. </p>
-<pre class="highlight shell"><code>curl <span class="s1">'https://quantum.socialmetrix.com/api/v1/accounts/1896/limits/consumed'</span> 
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET &#39;/accounts/&lt;ACCOUNT&gt;/billing-info&#39;</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>ACCOUNT</strong></td>
+<td>The ID obtained from JWT response: <code class="prettyprint">user.accountId</code></td>
+<td>790</td>
+</tr>
+</tbody></table>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>ids</strong></td>
+<td>A comma-separated list of profiles ids belonging to the project</td>
+<td>15087023444,182162001806727</td>
+</tr>
+<tr>
+<td><strong>since</strong></td>
+<td>Starting date (inclusive)</td>
+<td>2016-09-09</td>
+</tr>
+<tr>
+<td><strong>until</strong></td>
+<td>Ending date (exclusive)</td>
+<td>2016-10-08</td>
+</tr>
+<tr>
+<td><strong><em>timezone</em></strong></td>
+<td>(Optional): Time-zone that my metrics should be calculated</td>
+<td>America/Argentina/Buenos_Aires</td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<p>The response contains a <code class="prettyprint">data</code> object per each profile <code class="prettyprint">id</code>, inside <code class="prettyprint">data.current</code> is contained the acutal date period and <code class="prettyprint">data.previous</code> contains the values for the same previous period. If you select a month, it will be the previous month, if select you select 15 days <em>(Jun/16 ~ Jun/30)</em>, it will be the previous 15 days <em>(Jun/01 ~ Jun/15)</em>. </p>
+
+<table><thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>isTrial</strong></td>
+<td>Whether the account is it&rsquo;s <strong>trial</strong> period.</td>
+<td>True/False</td>
+</tr>
+<tr>
+<td><strong>currentBillingAmountInCents</strong></td>
+<td>The current <strong>billing amount</strong> showed in cents.</td>
+<td>9900</td>
+</tr>
+<tr>
+<td><strong>currentPeriodStart</strong></td>
+<td><strong>Starting date</strong> of the current payment period.</td>
+<td>2016-10-07T22:22:15</td>
+</tr>
+<tr>
+<td><strong>currentPeriodEnd</strong></td>
+<td><strong>Ending date</strong> of the current payment period.</td>
+<td>2016-10-07T22:22:15</td>
+</tr>
+<tr>
+<td><strong>coupon</strong></td>
+<td>Available <strong>coupons</strong> for the account.</td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>pendingCancellation</strong></td>
+<td>Whether there is a pending <strong>cancellation request</strong> waiting to be completed.</td>
+<td>True/False</td>
+</tr>
+<tr>
+<td><strong>nextPlan</strong></td>
+<td>Downgrades or upgrades of the account</td>
+<td>Upgrade</td>
+</tr>
+<tr>
+<td><strong>paymentType</strong></td>
+<td><strong>Payment Type</strong> selected for the account.</td>
+<td>Credit Card</td>
+</tr>
+</tbody></table>
+
+<h2 id="consumed-limits-info">Consumed limits info</h2>
+<pre class="highlight shell"><code>curl -XGET <span class="s2">"https://api.quantum.socialmetrix.com/v1/accounts/</span><span class="k">${</span><span class="nv">ACCOUNT</span><span class="k">}</span><span class="s2">/limits/consumed"</span> <span class="se">\</span>
+  -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+  -H <span class="s2">"X-Auth-Token: </span><span class="k">${</span><span class="nv">JWT</span><span class="k">}</span><span class="s2">"</span>
 </code></pre>
 
 <blockquote>
@@ -1196,6 +1797,102 @@ ids=15087023444&amp;since=2016-09-09&amp;until=2016-10-08&amp;owner=admin"</span
   </span><span class="nt">"fans"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
+
+<p>This endpoint details everything that has been consumed by the account. It gives the number of  users, campaigns, swaps, projects, profiles and fans created by the account.  </p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET &#39;/accounts/&lt;ACCOUNT&gt;/limits/consumed&#39;</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>ACCOUNT</strong></td>
+<td>The ID obtained from JWT response: <code class="prettyprint">user.accountId</code></td>
+<td>790</td>
+</tr>
+</tbody></table>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>ids</strong></td>
+<td>A comma-separated list of profiles ids belonging to the project</td>
+<td>15087023444,182162001806727</td>
+</tr>
+<tr>
+<td><strong>since</strong></td>
+<td>Starting date (inclusive)</td>
+<td>2016-09-09</td>
+</tr>
+<tr>
+<td><strong>until</strong></td>
+<td>Ending date (exclusive)</td>
+<td>2016-10-08</td>
+</tr>
+<tr>
+<td><strong><em>timezone</em></strong></td>
+<td>(Optional): Time-zone that my metrics should be calculated</td>
+<td>America/Argentina/Buenos_Aires</td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<p>The response contains a <code class="prettyprint">data</code> object per each profile <code class="prettyprint">id</code>, inside <code class="prettyprint">data.current</code> is contained the acutal date period and <code class="prettyprint">data.previous</code> contains the values for the same previous period. If you select a month, it will be the previous month, if select you select 15 days <em>(Jun/16 ~ Jun/30)</em>, it will be the previous 15 days <em>(Jun/01 ~ Jun/15)</em>. </p>
+
+<table><thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>users</strong></td>
+<td>Number of <strong>users</strong> in the selected period.</td>
+<td>2</td>
+</tr>
+<tr>
+<td><strong>campaigns</strong></td>
+<td>Number of <strong>campaigns</strong> in the selected period.</td>
+<td>2</td>
+</tr>
+<tr>
+<td><strong>projects</strong></td>
+<td>Number of <strong>projects</strong> in the selected period.</td>
+<td>8</td>
+</tr>
+<tr>
+<td><strong>profiles</strong></td>
+<td>Number of <strong>profiles</strong> in the selected period.</td>
+<td>6</td>
+</tr>
+<tr>
+<td><strong>swaps</strong></td>
+<td>Number of profile changes that can be done on the project. Each account has a swaps limit per month.</td>
+<td>2</td>
+</tr>
+<tr>
+<td><strong>fans</strong></td>
+<td>Number of <strong>fans</strong> in the selected period.</td>
+<td>65000</td>
+</tr>
+</tbody></table>
 
           <h1 id="roles">Roles</h1>
 
