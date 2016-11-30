@@ -2,7 +2,7 @@
 
 ## User Detail
 ```shell
-curl -XGET 'https://quantum.socialmetrix.com/api/v1/accounts/1896/users/68a3450f0f2b20e8ab6ec2e2838b532b'\
+curl -XGET 'https://quantum.socialmetrix.com/api/v1/accounts/${ACCOUNT}/users/${USER}'\
   -H "Content-Type: application/json" \
   -H "X-Auth-Token: ${JWT}"
 ```

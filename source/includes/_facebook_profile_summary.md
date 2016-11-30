@@ -1,7 +1,7 @@
 ##fb.Profile Summary 
 ```shell
 curl -XGET "https://api.quantum.socialmetrix.com/v1/accounts/${ACCOUNT}\
-/projects/0/facebook/profiles/stat-summary?\
+/projects/${PROJECT}/facebook/profiles/stat-summary?\
 ids=15087023444,182162001806727&since=2016-09-09&until=2016-10-08" \
   -H "Content-Type: application/json" \
   -H "X-Auth-Token: ${JWT}"
