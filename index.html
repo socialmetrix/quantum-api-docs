@@ -1085,10 +1085,11 @@ ids=15087023444&amp;since=2016-09-09&amp;until=2016-10-08&amp;owner=admin"</span
 </tr>
 </tbody></table>
 
-          <h2 id="fb-post-count-by-date">fb.Post count by date</h2>
+          <h2 id="fb-post-count-by-date">fb.Post Count by Date</h2>
 <pre class="highlight shell"><code>curl -XGET <span class="s2">"https://api.quantum.socialmetrix.com/v1/accounts/</span><span class="k">${</span><span class="nv">ACCOUNT</span><span class="k">}</span><span class="se">\</span><span class="s2">
 /projects/</span><span class="k">${</span><span class="nv">PROJECT</span><span class="k">}</span><span class="s2">/facebook/profiles/posts/count/date?</span><span class="se">\</span><span class="s2">
-ids=15087023444,182162001806727&amp;since=2016-09-09&amp;until=2016-10-08"</span> <span class="se">\</span>
+ids=15087023444,182162001806727&amp;since=2016-09-09&amp;until=2016-10-08&amp;</span><span class="se">\</span><span class="s2">
+owner=admin&amp;type=link"</span> <span class="se">\</span>
   -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
   -H <span class="s2">"X-Auth-Token: </span><span class="k">${</span><span class="nv">JWT</span><span class="k">}</span><span class="s2">"</span>
 </code></pre>
@@ -1132,7 +1133,7 @@ ids=15087023444,182162001806727&amp;since=2016-09-09&amp;until=2016-10-08"</span
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 
-<p>This endpoint gives information about the quantity of posted content from a Facebook page in a given period,   day by day, comparing them with the previous period. The analysis can be refined using four filters (statuses, links, videos or photos) that give you the exact number of posts of that type each day, and the total count during the current and previous periods.</p>
+<p>This endpoint gives information about the quantity of posted content from a Facebook page in a given period day by day, it also provides a sum of current period activity and previous period activity. The analysis can be filtered by whom created the content <strong>owner</strong> and by content <strong>type</strong>.</p>
 
 <h3 id="http-request">HTTP Request</h3>
 
@@ -1184,20 +1185,25 @@ ids=15087023444,182162001806727&amp;since=2016-09-09&amp;until=2016-10-08"</span
 <td>2016-10-08</td>
 </tr>
 <tr>
-<td><strong>owner</strong></td>
-<td>Owner of the project</td>
-<td>admin</td>
-</tr>
-<tr>
 <td><strong><em>timezone</em></strong></td>
 <td>(Optional): Time-zone that my metrics should be calculated</td>
 <td>America/Argentina/Buenos_Aires</td>
+</tr>
+<tr>
+<td><strong><em>owner</em></strong></td>
+<td>(Optional): Filter posts only from the page owner <code class="prettyprint">admin</code> or by the audience <code class="prettyprint">user</code></td>
+<td><code class="prettyprint">admin</code></td>
+</tr>
+<tr>
+<td><strong><em>type</em></strong></td>
+<td>(Optional): Filter posts by its type:<br /><code class="prettyprint">status</code>, <code class="prettyprint">link</code>, <code class="prettyprint">photo</code>, <code class="prettyprint">video</code>.<br />If value is missing <strong>all types</strong> will be used</td>
+<td><code class="prettyprint">photo</code></td>
 </tr>
 </tbody></table>
 
 <h3 id="response">Response</h3>
 
-<p>The response contains a <code class="prettyprint">data</code> object per each profile <code class="prettyprint">id</code>, inside <code class="prettyprint">data.current</code> is contained the acutal date period and <code class="prettyprint">data.previous</code> contains the values for the same previous period. If you select a month, it will be the previous month, if select you select 15 days <em>(Jun/16 ~ Jun/30)</em>, it will be the previous 15 days <em>(Jun/01 ~ Jun/15)</em>. </p>
+<p>The response contains a <code class="prettyprint">results</code> array of objects, which one profile <code class="prettyprint">id</code> per element. The array <code class="prettyprint">data</code> contains values representing a <a href="https://en.wikipedia.org/wiki/Time_series">Time Series</a> with an element for each day of the selected period, so the first element is the value for date passed as since and the last element is the value for until.</p>
 
 <table><thead>
 <tr>
@@ -1207,47 +1213,24 @@ ids=15087023444,182162001806727&amp;since=2016-09-09&amp;until=2016-10-08"</span
 </tr>
 </thead><tbody>
 <tr>
+<td><strong>id</strong></td>
+<td>ID of the social profile</td>
+<td>182162001806727</td>
+</tr>
+<tr>
+<td><strong>data</strong></td>
+<td>Daily variations of posts published, each element represents a day</td>
+<td>[1,1,2,1,3,3]</td>
+</tr>
+<tr>
 <td><strong>currentTotal</strong></td>
-<td>Total posts created during the current period.</td>
+<td>Total posts published during the current period</td>
 <td>26</td>
 </tr>
 <tr>
 <td><strong>previousTotal</strong></td>
-<td>Total posts created during the previous period.</td>
+<td>Total posts published during the previous period</td>
 <td>20</td>
-</tr>
-</tbody></table>
-
-<h3 id="filters">Filters</h3>
-
-<p>This endpoint allows you to sellect four additional filters. Each of them returns the number of statuses, links, videos or photos posted during the current and previous periods. </p>
-
-<table><thead>
-<tr>
-<th>Field</th>
-<th>Description</th>
-<th>Example</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><strong>statuses</strong></td>
-<td>Current or previously posted statuses.</td>
-<td>18</td>
-</tr>
-<tr>
-<td><strong>links</strong></td>
-<td>Current or previously posted links.</td>
-<td>20</td>
-</tr>
-<tr>
-<td><strong>videos</strong></td>
-<td>Current or previously posted videos.</td>
-<td>15</td>
-</tr>
-<tr>
-<td><strong>photos</strong></td>
-<td>Current or previously posted photos.</td>
-<td>12</td>
 </tr>
 </tbody></table>
 
@@ -1389,6 +1372,590 @@ ids=15087023444,182162001806727&amp;since=2016-09-09&amp;until=2016-10-08"</span
 <td><strong>photos</strong></td>
 <td>Current or previously posted photos.</td>
 <td>12</td>
+</tr>
+</tbody></table>
+
+          <h2 id="fb-post-count-by-weekday-by-hour">fb.Post count by weekday by hour</h2>
+<pre class="highlight shell"><code>curl -XGET <span class="s2">"https://api.quantum.socialmetrix.com/v1/accounts/</span><span class="k">${</span><span class="nv">ACCOUNT</span><span class="k">}</span><span class="se">\</span><span class="s2">
+/projects/</span><span class="k">${</span><span class="nv">PROJECT</span><span class="k">}</span><span class="s2">/facebook/profiles/posts/count/weekday/hour?</span><span class="se">\</span><span class="s2">
+ids=15087023444,182162001806727&amp;since=2016-09-09&amp;until=2016-10-08"</span> <span class="se">\</span>
+  -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+  -H <span class="s2">"X-Auth-Token: </span><span class="k">${</span><span class="nv">JWT</span><span class="k">}</span><span class="s2">"</span>
+</code></pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">  
+   </span><span class="nt">"query"</span><span class="p">:{</span><span class="w">  
+      </span><span class="nt">"id"</span><span class="p">:</span><span class="s2">"/accounts/ACCOUNT/projects/PROJECT/facebook/profiles/posts/count/weekday/hour"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"filters"</span><span class="p">:{</span><span class="w">  
+         </span><span class="nt">"timezone"</span><span class="p">:</span><span class="s2">"America/Argentina/Buenos_Aires"</span><span class="p">,</span><span class="w">
+         </span><span class="nt">"ids"</span><span class="p">:[</span><span class="w">  
+            </span><span class="s2">"18216234235326727"</span><span class="w">
+         </span><span class="p">],</span><span class="w">
+         </span><span class="nt">"since"</span><span class="p">:</span><span class="s2">"2016-10-30"</span><span class="p">,</span><span class="w">
+         </span><span class="nt">"until"</span><span class="p">:</span><span class="s2">"2016-11-28"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="nt">"results"</span><span class="p">:[</span><span class="w">  
+      </span><span class="p">{</span><span class="w">  
+         </span><span class="nt">"id"</span><span class="p">:</span><span class="s2">"18216234235326727"</span><span class="p">,</span><span class="w">
+         </span><span class="nt">"data"</span><span class="p">:[</span><span class="w">  
+            </span><span class="p">[</span><span class="w">  
+               </span><span class="mi">0</span><span class="p">,</span><span class="w">
+               </span><span class="mi">0</span><span class="p">,</span><span class="w">
+              </span><span class="err">...</span><span class="w"> </span><span class="err">omitted</span><span class="w"> </span><span class="err">...</span><span class="w">
+            </span><span class="p">],</span><span class="w">
+            </span><span class="p">[</span><span class="w">  
+               </span><span class="mi">0</span><span class="p">,</span><span class="w">
+               </span><span class="mi">1</span><span class="p">,</span><span class="w">
+               </span><span class="err">...</span><span class="w"> </span><span class="err">omitted</span><span class="w"> </span><span class="err">...</span><span class="w">
+            </span><span class="p">],</span><span class="w">
+            </span><span class="p">[</span><span class="w">  
+               </span><span class="mi">0</span><span class="p">,</span><span class="w">
+               </span><span class="mi">0</span><span class="p">,</span><span class="w">               
+               </span><span class="err">...</span><span class="w"> </span><span class="err">omitted</span><span class="w"> </span><span class="err">...</span><span class="w">
+            </span><span class="p">],</span><span class="w">
+            </span><span class="p">[</span><span class="w">  
+               </span><span class="mi">0</span><span class="p">,</span><span class="w">
+               </span><span class="mi">0</span><span class="p">,</span><span class="w">
+               </span><span class="err">...</span><span class="w"> </span><span class="err">omitted</span><span class="w"> </span><span class="err">...</span><span class="w">
+            </span><span class="p">],</span><span class="w">
+            </span><span class="p">[</span><span class="w">  
+               </span><span class="mi">0</span><span class="p">,</span><span class="w">
+               </span><span class="mi">1</span><span class="p">,</span><span class="w">
+               </span><span class="err">...</span><span class="w"> </span><span class="err">omitted</span><span class="w"> </span><span class="err">...</span><span class="w">
+            </span><span class="p">],</span><span class="w">
+            </span><span class="p">[</span><span class="w">  
+               </span><span class="mi">0</span><span class="p">,</span><span class="w">
+               </span><span class="mi">0</span><span class="p">,</span><span class="w">
+              </span><span class="err">...</span><span class="w"> </span><span class="err">omitted</span><span class="w"> </span><span class="err">...</span><span class="w">
+            </span><span class="p">],</span><span class="w">
+            </span><span class="p">[</span><span class="w">  
+               </span><span class="mi">0</span><span class="p">,</span><span class="w">
+               </span><span class="mi">0</span><span class="p">,</span><span class="w">
+               </span><span class="err">...</span><span class="w"> </span><span class="err">omitted</span><span class="w"> </span><span class="err">...</span><span class="w">
+            </span><span class="p">]</span><span class="w">
+         </span><span class="p">]</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+   </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>This endpoint gives information about the quantity of posted content from a Facebook page for each day of the week, each hour of the day. The array on data field contains the values of our Time Series, for each day of the selected period, so the first element is the value for date passed as <code class="prettyprint">since</code> and the last element is the value for <code class="prettyprint">until</code>. You probably want to use these information together to generate a table o chart.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET /accounts/&lt;ACCOUNT&gt;/projects/&lt;PROJECT&gt;/facebook/profiles/posts/count/weekday/hour</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>ACCOUNT</strong></td>
+<td>The ID obtained from JWT response: <code class="prettyprint">user.accountId</code></td>
+<td>790</td>
+</tr>
+<tr>
+<td><strong>PROJECT</strong></td>
+<td>Current Project</td>
+<td>0</td>
+</tr>
+</tbody></table>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>ids</strong></td>
+<td>A comma-separated list of profiles ids belonging to the project</td>
+<td>15087023444,182162001806727</td>
+</tr>
+<tr>
+<td><strong>since</strong></td>
+<td>Starting date (inclusive)</td>
+<td>2016-09-09</td>
+</tr>
+<tr>
+<td><strong>until</strong></td>
+<td>Ending date (exclusive)</td>
+<td>2016-10-08</td>
+</tr>
+<tr>
+<td><strong>owner</strong></td>
+<td>Owner of the project</td>
+<td>admin</td>
+</tr>
+<tr>
+<td><strong><em>timezone</em></strong></td>
+<td>(Optional): Time-zone that my metrics should be calculated</td>
+<td>America/Argentina/Buenos_Aires</td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<p>The response contains a <code class="prettyprint">data</code> object per each profile <code class="prettyprint">id</code>, inside <code class="prettyprint">data.current</code> is contained the acutal date period and <code class="prettyprint">data.previous</code> contains the values for the same previous period. If you select a month, it will be the previous month, if select you select 15 days <em>(Jun/16 ~ Jun/30)</em>, it will be the previous 15 days <em>(Jun/01 ~ Jun/15)</em>. </p>
+
+<table><thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>Arrays</strong></td>
+<td>Each array stands for one day of the week.</td>
+<td>[0,0,0,0,0,0,0,0,0,0,0,0,0,1&hellip;]</td>
+</tr>
+<tr>
+<td><strong>Lines</strong></td>
+<td>Each line stands for one hour of the day.</td>
+<td>1</td>
+</tr>
+</tbody></table>
+
+          <h2 id="fb-post-interactions-by-date">fb.Post Interactions by Date</h2>
+<pre class="highlight shell"><code>curl -XGET <span class="s2">"https://api.quantum.socialmetrix.com/v1/accounts/</span><span class="k">${</span><span class="nv">ACCOUNT</span><span class="k">}</span><span class="se">\</span><span class="s2">
+/projects/</span><span class="k">${</span><span class="nv">PROJECT</span><span class="k">}</span><span class="s2">/facebook/profiles/interactions/count/date?</span><span class="se">\</span><span class="s2">
+ids=15087023444,182162001806727&amp;since=2016-09-09&amp;until=2016-10-08"</span> <span class="se">\</span>
+  -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+  -H <span class="s2">"X-Auth-Token: </span><span class="k">${</span><span class="nv">JWT</span><span class="k">}</span><span class="s2">"</span>
+</code></pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">  
+   </span><span class="nt">"query"</span><span class="p">:{</span><span class="w">  
+      </span><span class="nt">"id"</span><span class="p">:</span><span class="s2">"/accounts/1896/projects/0/facebook/profiles/interactions/count/date"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"filters"</span><span class="p">:{</span><span class="w">  
+         </span><span class="nt">"timezone"</span><span class="p">:</span><span class="s2">"America/Argentina/Buenos_Aires"</span><span class="p">,</span><span class="w">
+         </span><span class="nt">"ids"</span><span class="p">:[</span><span class="w">  
+            </span><span class="s2">"1842342346727"</span><span class="w">
+         </span><span class="p">],</span><span class="w">
+         </span><span class="nt">"since"</span><span class="p">:</span><span class="s2">"2016-10-30"</span><span class="p">,</span><span class="w">
+         </span><span class="nt">"until"</span><span class="p">:</span><span class="s2">"2016-11-28"</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="nt">"period"</span><span class="p">:{</span><span class="w">  
+         </span><span class="nt">"id"</span><span class="p">:</span><span class="s2">"1d"</span><span class="p">,</span><span class="w">
+         </span><span class="nt">"duration"</span><span class="p">:</span><span class="mi">86400</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="nt">"results"</span><span class="p">:[</span><span class="w">  
+      </span><span class="p">{</span><span class="w">  
+         </span><span class="nt">"id"</span><span class="p">:</span><span class="s2">"1842342346727"</span><span class="p">,</span><span class="w">
+         </span><span class="nt">"data"</span><span class="p">:[</span><span class="w">  
+            </span><span class="p">{</span><span class="w">  
+               </span><span class="nt">"likes"</span><span class="p">:</span><span class="mi">22336</span><span class="p">,</span><span class="w">
+               </span><span class="nt">"comments"</span><span class="p">:</span><span class="mi">297</span><span class="p">,</span><span class="w">
+               </span><span class="nt">"shares"</span><span class="p">:</span><span class="mi">3209</span><span class="p">,</span><span class="w">
+               </span><span class="nt">"engagementRate"</span><span class="p">:</span><span class="mf">0.0015449481</span><span class="p">,</span><span class="w">
+               </span><span class="nt">"interactions"</span><span class="p">:</span><span class="mi">25842</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="p">{</span><span class="w">  
+               </span><span class="nt">"likes"</span><span class="p">:</span><span class="mi">2537</span><span class="p">,</span><span class="w">
+               </span><span class="nt">"comments"</span><span class="p">:</span><span class="mi">64</span><span class="p">,</span><span class="w">
+               </span><span class="nt">"shares"</span><span class="p">:</span><span class="mi">621</span><span class="p">,</span><span class="w">
+               </span><span class="nt">"engagementRate"</span><span class="p">:</span><span class="mf">1.9262529E-4</span><span class="p">,</span><span class="w">
+               </span><span class="nt">"interactions"</span><span class="p">:</span><span class="mi">3222</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="p">{</span><span class="w">  
+               </span><span class="nt">"likes"</span><span class="p">:</span><span class="mi">4207</span><span class="p">,</span><span class="w">
+               </span><span class="nt">"comments"</span><span class="p">:</span><span class="mi">132</span><span class="p">,</span><span class="w">
+               </span><span class="nt">"shares"</span><span class="p">:</span><span class="mi">591</span><span class="p">,</span><span class="w">
+               </span><span class="nt">"engagementRate"</span><span class="p">:</span><span class="mf">2.9473702E-4</span><span class="p">,</span><span class="w">
+               </span><span class="nt">"interactions"</span><span class="p">:</span><span class="mi">4930</span><span class="w">
+            </span><span class="p">},</span><span class="w">           
+            </span><span class="p">{</span><span class="w">  
+               </span><span class="nt">"likes"</span><span class="p">:</span><span class="mi">1799</span><span class="p">,</span><span class="w">
+               </span><span class="nt">"comments"</span><span class="p">:</span><span class="mi">24</span><span class="p">,</span><span class="w">
+               </span><span class="nt">"shares"</span><span class="p">:</span><span class="mi">192</span><span class="p">,</span><span class="w">
+               </span><span class="nt">"engagementRate"</span><span class="p">:</span><span class="mf">1.20465535E-4</span><span class="p">,</span><span class="w">
+               </span><span class="nt">"interactions"</span><span class="p">:</span><span class="mi">2015</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+         </span><span class="p">],</span><span class="w">
+         </span><span class="nt">"currentTotal"</span><span class="p">:{</span><span class="w">  
+            </span><span class="nt">"likes"</span><span class="p">:</span><span class="mi">111616</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"comments"</span><span class="p">:</span><span class="mi">2606</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"shares"</span><span class="p">:</span><span class="mi">19102</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"engagementRate"</span><span class="p">:</span><span class="mf">0.007970693</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"interactions"</span><span class="p">:</span><span class="mi">133324</span><span class="w">
+         </span><span class="p">},</span><span class="w">
+         </span><span class="nt">"previousTotal"</span><span class="p">:{</span><span class="w">  
+            </span><span class="nt">"likes"</span><span class="p">:</span><span class="mi">101317</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"comments"</span><span class="p">:</span><span class="mi">1710</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"shares"</span><span class="p">:</span><span class="mi">9532</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"engagementRate"</span><span class="p">:</span><span class="mf">0.004969201</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"interactions"</span><span class="p">:</span><span class="mi">112559</span><span class="w">
+         </span><span class="p">}</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+   </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>This endpoint gives the number of likes, comments, shares, interactions and the engagement rate of a Facebook page for each day of the selected period. The array on data field contains the values of our Time Series, for each day of the selected period, so the first element is the value for date passed as <code class="prettyprint">since</code> and the last element is the value for <code class="prettyprint">until</code>. You probably want to use these information together to generate a table o chart.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET /accounts/&lt;ACCOUNT&gt;/projects/&lt;PROJECT&gt;/facebook/profiles/interactions/count/date</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>ACCOUNT</strong></td>
+<td>The ID obtained from JWT response: <code class="prettyprint">user.accountId</code></td>
+<td>790</td>
+</tr>
+<tr>
+<td><strong>PROJECT</strong></td>
+<td>Current Project</td>
+<td>0</td>
+</tr>
+</tbody></table>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>ids</strong></td>
+<td>A comma-separated list of profiles ids belonging to the project</td>
+<td>15087023444,182162001806727</td>
+</tr>
+<tr>
+<td><strong>since</strong></td>
+<td>Starting date (inclusive)</td>
+<td>2016-09-09</td>
+</tr>
+<tr>
+<td><strong>until</strong></td>
+<td>Ending date (exclusive)</td>
+<td>2016-10-08</td>
+</tr>
+<tr>
+<td><strong>owner</strong></td>
+<td>Owner of the project</td>
+<td>admin</td>
+</tr>
+<tr>
+<td><strong><em>timezone</em></strong></td>
+<td>(Optional): Time-zone that my metrics should be calculated</td>
+<td>America/Argentina/Buenos_Aires</td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<p>The response contains a <code class="prettyprint">data</code> object per each profile <code class="prettyprint">id</code>, inside <code class="prettyprint">data.current</code> is contained the acutal date period and <code class="prettyprint">data.previous</code> contains the values for the same previous period. If you select a month, it will be the previous month, if select you select 15 days <em>(Jun/16 ~ Jun/30)</em>, it will be the previous 15 days <em>(Jun/01 ~ Jun/15)</em>. </p>
+
+<table><thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>likes</strong></td>
+<td>The number of <strong>likes</strong> in a date of the selected period.</td>
+<td>111616</td>
+</tr>
+<tr>
+<td><strong>comments</strong></td>
+<td>The number of <strong>comments</strong> in a date of the selected period.</td>
+<td>2606</td>
+</tr>
+<tr>
+<td><strong>shares</strong></td>
+<td>The number of <strong>shares</strong> in a date of the selected period.</td>
+<td>19102</td>
+</tr>
+<tr>
+<td><strong>engagementRate</strong></td>
+<td>The <strong>engagement rate</strong> of the page in a date of the selected period.</td>
+<td>0.007970693</td>
+</tr>
+<tr>
+<td><strong>interactions</strong></td>
+<td>Sum of <strong>likes, comments and shares</strong> generated during a date of the selected period.</td>
+<td>133324</td>
+</tr>
+</tbody></table>
+
+          <h2 id="fb-fans-count-by-date">fb.Fans count by date</h2>
+<pre class="highlight shell"><code>curl -XGET <span class="s2">"https://api.quantum.socialmetrix.com/v1/accounts/</span><span class="k">${</span><span class="nv">ACCOUNT</span><span class="k">}</span><span class="se">\</span><span class="s2">
+/projects/</span><span class="k">${</span><span class="nv">PROJECT</span><span class="k">}</span><span class="s2">/facebook/fans/count/date?</span><span class="se">\</span><span class="s2">
+ids=15087023444,182162001806727&amp;since=2016-09-09&amp;until=2016-10-08"</span> <span class="se">\</span>
+  -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+  -H <span class="s2">"X-Auth-Token: </span><span class="k">${</span><span class="nv">JWT</span><span class="k">}</span><span class="s2">"</span>
+</code></pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">  
+   </span><span class="nt">"query"</span><span class="p">:{</span><span class="w">  
+      </span><span class="nt">"id"</span><span class="p">:</span><span class="s2">"/accounts/ACCOUNT/projects/PROJECT/facebook/fans/count/date"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"filters"</span><span class="p">:{</span><span class="w">  
+         </span><span class="nt">"timezone"</span><span class="p">:</span><span class="s2">"America/Argentina/Buenos_Aires"</span><span class="p">,</span><span class="w">
+         </span><span class="nt">"ids"</span><span class="p">:[</span><span class="w">  
+            </span><span class="s2">"182162321546727"</span><span class="w">
+         </span><span class="p">],</span><span class="w">
+         </span><span class="nt">"since"</span><span class="p">:</span><span class="s2">"2016-10-30"</span><span class="p">,</span><span class="w">
+         </span><span class="nt">"until"</span><span class="p">:</span><span class="s2">"2016-11-28"</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="nt">"period"</span><span class="p">:{</span><span class="w">  
+         </span><span class="nt">"id"</span><span class="p">:</span><span class="s2">"1d"</span><span class="p">,</span><span class="w">
+         </span><span class="nt">"duration"</span><span class="p">:</span><span class="mi">86400</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="nt">"results"</span><span class="p">:[</span><span class="w">  
+      </span><span class="p">{</span><span class="w">  
+         </span><span class="nt">"id"</span><span class="p">:</span><span class="s2">"182162321546727"</span><span class="p">,</span><span class="w">
+         </span><span class="nt">"data"</span><span class="p">:[</span><span class="w">  
+            </span><span class="mi">7259</span><span class="p">,</span><span class="w">
+            </span><span class="mi">6056</span><span class="p">,</span><span class="w">
+            </span><span class="mi">3488</span><span class="p">,</span><span class="w">
+            </span><span class="mi">-8587420</span><span class="p">,</span><span class="w">
+            </span><span class="mi">-2861409</span><span class="w">
+           </span><span class="err">...</span><span class="w"> </span><span class="err">omitted</span><span class="w"> </span><span class="err">...</span><span class="w">
+
+         </span><span class="p">],</span><span class="w">
+         </span><span class="nt">"currentTotal"</span><span class="p">:</span><span class="mi">-11343999</span><span class="p">,</span><span class="w">
+         </span><span class="nt">"previousTotal"</span><span class="p">:</span><span class="mi">188739</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+   </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>This endpoint gives the number of fans of a Facebook page for each day of the selected period. The array on data field contains the values of our Time Series, for each day of the selected period, so the first element is the value for date passed as <code class="prettyprint">since</code> and the last element is the value for <code class="prettyprint">until</code>. You probably want to use these information together to generate a table o chart.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET /accounts/&lt;ACCOUNT&gt;/projects/&lt;PROJECT&gt;/facebook/fans/count/date</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>ACCOUNT</strong></td>
+<td>The ID obtained from JWT response: <code class="prettyprint">user.accountId</code></td>
+<td>790</td>
+</tr>
+<tr>
+<td><strong>PROJECT</strong></td>
+<td>Current Project</td>
+<td>0</td>
+</tr>
+</tbody></table>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>ids</strong></td>
+<td>A comma-separated list of profiles ids belonging to the project</td>
+<td>15087023444,182162001806727</td>
+</tr>
+<tr>
+<td><strong>since</strong></td>
+<td>Starting date (inclusive)</td>
+<td>2016-09-09</td>
+</tr>
+<tr>
+<td><strong>until</strong></td>
+<td>Ending date (exclusive)</td>
+<td>2016-10-08</td>
+</tr>
+<tr>
+<td><strong><em>timezone</em></strong></td>
+<td>(Optional): Time-zone that my metrics should be calculated</td>
+<td>America/Argentina/Buenos_Aires</td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<p>The response contains a <code class="prettyprint">data</code> object per each profile <code class="prettyprint">id</code>, inside <code class="prettyprint">data.current</code> is contained the acutal date period and <code class="prettyprint">data.previous</code> contains the values for the same previous period. If you select a month, it will be the previous month, if select you select 15 days <em>(Jun/16 ~ Jun/30)</em>, it will be the previous 15 days <em>(Jun/01 ~ Jun/15)</em>. </p>
+
+<table><thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>Lines</strong></td>
+<td>Each line stands for the number of fans on a <strong>date</strong> of the selected period.</td>
+<td>7259</td>
+</tr>
+</tbody></table>
+
+          <h2 id="fb-fans-count-by-country">fb.Fans count by country</h2>
+<pre class="highlight shell"><code>curl -XGET <span class="s2">"https://api.quantum.socialmetrix.com/v1/accounts/</span><span class="k">${</span><span class="nv">ACCOUNT</span><span class="k">}</span><span class="se">\</span><span class="s2">
+/projects/</span><span class="k">${</span><span class="nv">PROJECT</span><span class="k">}</span><span class="s2">/facebook/fans/count/country/date?</span><span class="se">\</span><span class="s2">
+ids=15087023444,182162001806727&amp;since=2016-09-09&amp;until=2016-10-08"</span> <span class="se">\</span>
+  -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+  -H <span class="s2">"X-Auth-Token: </span><span class="k">${</span><span class="nv">JWT</span><span class="k">}</span><span class="s2">"</span>
+</code></pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">  
+   </span><span class="nt">"query"</span><span class="p">:{</span><span class="w">  
+      </span><span class="nt">"id"</span><span class="p">:</span><span class="s2">"/accounts/ACCOUNT/projects/PROJECT/facebook/fans/count/country/date"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"filters"</span><span class="p">:{</span><span class="w">  
+         </span><span class="nt">"timezone"</span><span class="p">:</span><span class="s2">"America/Argentina/Buenos_Aires"</span><span class="p">,</span><span class="w">
+         </span><span class="nt">"ids"</span><span class="p">:[</span><span class="w">  
+            </span><span class="s2">"444462001806727"</span><span class="w">
+         </span><span class="p">],</span><span class="w">
+         </span><span class="nt">"since"</span><span class="p">:</span><span class="s2">"2016-10-30"</span><span class="p">,</span><span class="w">
+         </span><span class="nt">"until"</span><span class="p">:</span><span class="s2">"2016-11-28"</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="nt">"period"</span><span class="p">:{</span><span class="w">  
+         </span><span class="nt">"id"</span><span class="p">:</span><span class="s2">"1d"</span><span class="p">,</span><span class="w">
+         </span><span class="nt">"duration"</span><span class="p">:</span><span class="mi">86400</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="nt">"results"</span><span class="p">:[</span><span class="w">  
+      </span><span class="p">{</span><span class="w">  
+         </span><span class="nt">"id"</span><span class="p">:</span><span class="s2">"182162001806727"</span><span class="p">,</span><span class="w">
+         </span><span class="nt">"data"</span><span class="p">:[</span><span class="w">  
+            </span><span class="p">{</span><span class="w">  
+               </span><span class="nt">"id"</span><span class="p">:</span><span class="s2">"DE"</span><span class="p">,</span><span class="w">
+               </span><span class="nt">"data"</span><span class="p">:[</span><span class="w">  
+                  </span><span class="p">{</span><span class="w">  
+                     </span><span class="nt">"newFans"</span><span class="p">:</span><span class="mi">149</span><span class="p">,</span><span class="w">
+                     </span><span class="nt">"uniqueUsers"</span><span class="p">:</span><span class="mi">686</span><span class="w">
+                  </span><span class="p">},</span><span class="w">
+                  </span><span class="p">{</span><span class="w">  
+                     </span><span class="nt">"newFans"</span><span class="p">:</span><span class="mi">32</span><span class="p">,</span><span class="w">
+                     </span><span class="nt">"uniqueUsers"</span><span class="p">:</span><span class="mi">593</span><span class="w">
+                  </span><span class="p">}</span><span class="w">
+                </span><span class="p">]</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+    </span><span class="err">]</span><span class="w">
+</span></code></pre>
+
+<p>This endpoint brings information about new fans and unique users of a Facebook page on a selected period according to their country. Every country has an ID and the array on data field contains the values of our Time Series, for each day of the selected period, so the first element is the value for date passed as <code class="prettyprint">since</code> and the last element is the value for <code class="prettyprint">until</code>. You probably want to use these information together to generate a table o chart.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET /accounts/&lt;ACCOUNT&gt;/projects/&lt;PROJECT&gt;/facebook/fans/count/country/date</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>ACCOUNT</strong></td>
+<td>The ID obtained from JWT response: <code class="prettyprint">user.accountId</code></td>
+<td>790</td>
+</tr>
+<tr>
+<td><strong>PROJECT</strong></td>
+<td>Current Project</td>
+<td>0</td>
+</tr>
+</tbody></table>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>ids</strong></td>
+<td>A comma-separated list of profiles ids belonging to the project</td>
+<td>15087023444,182162001806727</td>
+</tr>
+<tr>
+<td><strong>since</strong></td>
+<td>Starting date (inclusive)</td>
+<td>2016-09-09</td>
+</tr>
+<tr>
+<td><strong>until</strong></td>
+<td>Ending date (exclusive)</td>
+<td>2016-10-08</td>
+</tr>
+<tr>
+<td><strong><em>timezone</em></strong></td>
+<td>(Optional): Time-zone that my metrics should be calculated</td>
+<td>America/Argentina/Buenos_Aires</td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<p>The response contains a <code class="prettyprint">data</code> object per each profile <code class="prettyprint">id</code>, inside <code class="prettyprint">data.current</code> is contained the acutal date period and <code class="prettyprint">data.previous</code> contains the values for the same previous period. If you select a month, it will be the previous month, if select you select 15 days <em>(Jun/16 ~ Jun/30)</em>, it will be the previous 15 days <em>(Jun/01 ~ Jun/15)</em>. </p>
+
+<table><thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>newFans</strong></td>
+<td>Number of <strong>new fans</strong> on the selected date.</td>
+<td>32</td>
+</tr>
+<tr>
+<td><strong>uniqueUsers</strong></td>
+<td>Number of <strong>unique users</strong> on the selected date.</td>
+<td>593</td>
 </tr>
 </tbody></table>
 
