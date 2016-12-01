@@ -13,10 +13,10 @@ includes:
   - facebook_profile_summary
   - facebook_profile_interactions
   - facebook_profile_posts_ranking_interactions
-  - facebook_post_count_by_date_with_filters
-  - facebook_post_count_by_type
   - facebook_post_count_by_date
+  - facebook_post_count_by_type
   - facebook_post_count_by_weekday_by_hour
+  - facebook_post_interactions_count_by_date
   - facebook_fans_count_by_date
   - facebook_fans_count_by_country
   - users
