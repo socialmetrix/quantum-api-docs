@@ -1,7 +1,8 @@
-##fb.Post count by date  
+##fb.Post count by date
+
 ```shell
 curl -XGET "https://api.quantum.socialmetrix.com/v1/accounts/${ACCOUNT}\
-/projects/${PROJECT}/facebook/profiles/posts/count/date?\
+/projects/${PROJECT}/facebook/profiles/interactions/count/date?\
 ids=15087023444,182162001806727&since=2016-09-09&until=2016-10-08" \
   -H "Content-Type: application/json" \
   -H "X-Auth-Token: ${JWT}"
@@ -12,11 +13,11 @@ ids=15087023444,182162001806727&since=2016-09-09&until=2016-10-08" \
 ```json
 {  
    "query":{  
-      "id":"/accounts/1896/projects/0/facebook/profiles/posts/count/date",
+      "id":"/accounts/1896/projects/0/facebook/profiles/interactions/count/date",
       "filters":{  
          "timezone":"America/Argentina/Buenos_Aires",
          "ids":[  
-            "182162001806727"
+            "1842342346727"
          ],
          "since":"2016-10-30",
          "until":"2016-11-28"
@@ -28,29 +29,61 @@ ids=15087023444,182162001806727&since=2016-09-09&until=2016-10-08" \
    },
    "results":[  
       {  
-         "id":"182162001806727",
+         "id":"1842342346727",
          "data":[  
-            1,
-            1,
-            1,
-            1,
-            1,
-            2,
-            1,
-             ... omitted ...
+            {  
+               "likes":22336,
+               "comments":297,
+               "shares":3209,
+               "engagementRate":0.0015449481,
+               "interactions":25842
+            },
+            {  
+               "likes":2537,
+               "comments":64,
+               "shares":621,
+               "engagementRate":1.9262529E-4,
+               "interactions":3222
+            },
+            {  
+               "likes":4207,
+               "comments":132,
+               "shares":591,
+               "engagementRate":2.9473702E-4,
+               "interactions":4930
+            },           
+            {  
+               "likes":1799,
+               "comments":24,
+               "shares":192,
+               "engagementRate":1.20465535E-4,
+               "interactions":2015
+            }
          ],
-         "currentTotal":26,
-         "previousTotal":30
+         "currentTotal":{  
+            "likes":111616,
+            "comments":2606,
+            "shares":19102,
+            "engagementRate":0.007970693,
+            "interactions":133324
+         },
+         "previousTotal":{  
+            "likes":101317,
+            "comments":1710,
+            "shares":9532,
+            "engagementRate":0.004969201,
+            "interactions":112559
+         }
       }
    ]
 }
 ```
 
-This endpoint gives information about the quantity of posted content from a Facebook page in a given period,   day by day, comparing them with the previous period. The analysis can be refined using four filters (statuses, links, videos or photos) that give you the exact number of posts of that type each day, and the total count during the current and previous periods.
+This endpoint gives the number of likes, comments, shares, interactions and the engagement rate of a Facebook page for each day of the selected period. The array on data field contains the values of our Time Series, for each day of the selected period, so the first element is the value for date passed as `since` and the last element is the value for `until`. You probably want to use these information together to generate a table o chart.
 
 ### HTTP Request
 
-`GET /accounts/<ACCOUNT>/projects/<PROJECT>/facebook/profiles/posts/count/date`
+`GET /accounts/<ACCOUNT>/projects/<PROJECT>/facebook/profiles/interactions/count/date`
 
 ### URL Parameters
 
@@ -75,17 +108,9 @@ The response contains a `data` object per each profile `id`, inside `data.curren
 
 Field | Description | Example
 --------- | ----------- | -----------
-**currentTotal** | Total posts created during the current period. | 26
-**previousTotal** | Total posts created during the previous period. | 20
+**likes** | The number of **likes** in a date of the selected period. | 111616
+**comments** | The number of **comments** in a date of the selected period. |  2606
+**shares** | The number of **shares** in a date of the selected period. |  19102
+**engagementRate** | The **engagement rate** of the page in a date of the selected period. |  0.007970693
+**interactions** | Sum of **likes, comments and shares** generated during a date of the selected period. |  133324
 
-### Filters
-
-This endpoint allows you to sellect four additional filters. Each of them returns the number of statuses, links, videos or photos posted during the current and previous periods. 
-
-Field | Description | Example
---------- | ----------- | -----------
-**statuses** | Current or previously posted statuses. | 18
-**links** | Current or previously posted links. | 20
-**videos** | Current or previously posted videos. | 15
-**photos** | Current or previously posted photos. | 12
- 
