@@ -97,5 +97,5 @@ The response contains a `results` array of objects, which one profile `id` per e
 
 Field | Description | Example
 --------- | ----------- | -----------
-**Arrays** | Each array stands for one day of the week. |  [0,0,0,0,0,0,0,0,0,0,0,0,0,1...]
-**Lines** | Each line stands for one hour of the day. |  1
+**data** | Each array stands for one day of the week. |  [0,0,0,0,0,0,0,0,0,0,0,0,0,1...]
+**data** | Each line stands for one hour of the day. |  1
