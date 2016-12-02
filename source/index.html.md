@@ -19,6 +19,7 @@ includes:
   - facebook_post_interactions_count_by_date
   - facebook_fans_count_by_date
   - facebook_fans_count_by_country
+  - facebook_user_ranking
   - users
   - usage
   - others
