@@ -1508,7 +1508,7 @@ ids=15087023444,182162001806727&amp;since=2016-09-09&amp;until=2016-10-08"</span
 
 <h3 id="response">Response</h3>
 
-<p>The response contains a <code class="prettyprint">data</code> object per each profile <code class="prettyprint">id</code>, inside <code class="prettyprint">data.current</code> is contained the acutal date period and <code class="prettyprint">data.previous</code> contains the values for the same previous period. If you select a month, it will be the previous month, if select you select 15 days <em>(Jun/16 ~ Jun/30)</em>, it will be the previous 15 days <em>(Jun/01 ~ Jun/15)</em>. </p>
+<p>The response contains a <code class="prettyprint">results</code> array of objects, which one profile <code class="prettyprint">id</code> per element. The array <code class="prettyprint">data</code> contains values representing a <a href="https://en.wikipedia.org/wiki/Time_series">Time Series</a> with an element for each day of the selected period, so the first element is the value for date passed as since and the last element is the value for until.</p>
 
 <table><thead>
 <tr>
@@ -1518,12 +1518,12 @@ ids=15087023444,182162001806727&amp;since=2016-09-09&amp;until=2016-10-08"</span
 </tr>
 </thead><tbody>
 <tr>
-<td><strong>Arrays</strong></td>
+<td><strong>data</strong></td>
 <td>Each array stands for one day of the week.</td>
 <td>[0,0,0,0,0,0,0,0,0,0,0,0,0,1&hellip;]</td>
 </tr>
 <tr>
-<td><strong>Lines</strong></td>
+<td><strong>data</strong></td>
 <td>Each line stands for one hour of the day.</td>
 <td>1</td>
 </tr>
@@ -1673,7 +1673,7 @@ ids=15087023444,182162001806727&amp;since=2016-09-09&amp;until=2016-10-08"</span
 
 <h3 id="response">Response</h3>
 
-<p>The response contains a <code class="prettyprint">data</code> object per each profile <code class="prettyprint">id</code>, inside <code class="prettyprint">data.current</code> is contained the acutal date period and <code class="prettyprint">data.previous</code> contains the values for the same previous period. If you select a month, it will be the previous month, if select you select 15 days <em>(Jun/16 ~ Jun/30)</em>, it will be the previous 15 days <em>(Jun/01 ~ Jun/15)</em>. </p>
+<p>The response contains a <code class="prettyprint">results</code> array of objects, which one profile <code class="prettyprint">id</code> per element. The array <code class="prettyprint">data</code> contains values representing a <a href="https://en.wikipedia.org/wiki/Time_series">Time Series</a> with an element for each day of the selected period, so the first element is the value for date passed as since and the last element is the value for until.</p>
 
 <table><thead>
 <tr>
@@ -1815,7 +1815,7 @@ ids=15087023444,182162001806727&amp;since=2016-09-09&amp;until=2016-10-08"</span
 
 <h3 id="response">Response</h3>
 
-<p>The response contains a <code class="prettyprint">data</code> object per each profile <code class="prettyprint">id</code>, inside <code class="prettyprint">data.current</code> is contained the acutal date period and <code class="prettyprint">data.previous</code> contains the values for the same previous period. If you select a month, it will be the previous month, if select you select 15 days <em>(Jun/16 ~ Jun/30)</em>, it will be the previous 15 days <em>(Jun/01 ~ Jun/15)</em>. </p>
+<p>The response contains a <code class="prettyprint">results</code> array of objects, which one profile <code class="prettyprint">id</code> per element. The array <code class="prettyprint">data</code> contains values representing a <a href="https://en.wikipedia.org/wiki/Time_series">Time Series</a> with an element for each day of the selected period, so the first element is the value for date passed as since and the last element is the value for until.</p>
 
 <table><thead>
 <tr>
@@ -1825,7 +1825,7 @@ ids=15087023444,182162001806727&amp;since=2016-09-09&amp;until=2016-10-08"</span
 </tr>
 </thead><tbody>
 <tr>
-<td><strong>Lines</strong></td>
+<td><strong>data</strong></td>
 <td>Each line stands for the number of fans on a <strong>date</strong> of the selected period.</td>
 <td>7259</td>
 </tr>
@@ -1872,10 +1872,12 @@ ids=15087023444,182162001806727&amp;since=2016-09-09&amp;until=2016-10-08"</span
                   </span><span class="p">{</span><span class="w">  
                      </span><span class="nt">"newFans"</span><span class="p">:</span><span class="mi">32</span><span class="p">,</span><span class="w">
                      </span><span class="nt">"uniqueUsers"</span><span class="p">:</span><span class="mi">593</span><span class="w">
-                  </span><span class="p">}</span><span class="w">
+                  </span><span class="p">},</span><span class="w">
+                   </span><span class="err">...</span><span class="w"> </span><span class="err">omitted</span><span class="w"> </span><span class="err">...</span><span class="w">
                 </span><span class="p">]</span><span class="w">
       </span><span class="p">{</span><span class="w">
     </span><span class="err">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
 </span></code></pre>
 
 <p>This endpoint brings information about new fans and unique users of a Facebook page on a selected period according to their country. Every country has an ID and the array on data field contains the values of our Time Series, for each day of the selected period, so the first element is the value for date passed as <code class="prettyprint">since</code> and the last element is the value for <code class="prettyprint">until</code>. You probably want to use these information together to generate a table o chart.</p>
@@ -1938,7 +1940,7 @@ ids=15087023444,182162001806727&amp;since=2016-09-09&amp;until=2016-10-08"</span
 
 <h3 id="response">Response</h3>
 
-<p>The response contains a <code class="prettyprint">data</code> object per each profile <code class="prettyprint">id</code>, inside <code class="prettyprint">data.current</code> is contained the acutal date period and <code class="prettyprint">data.previous</code> contains the values for the same previous period. If you select a month, it will be the previous month, if select you select 15 days <em>(Jun/16 ~ Jun/30)</em>, it will be the previous 15 days <em>(Jun/01 ~ Jun/15)</em>. </p>
+<p>The response contains a <code class="prettyprint">results</code> array of objects, which one profile <code class="prettyprint">id</code> per element. The array <code class="prettyprint">data</code> contains values representing a <a href="https://en.wikipedia.org/wiki/Time_series">Time Series</a> with an element for each day of the selected period, so the first element is the value for date passed as since and the last element is the value for until. </p>
 
 <table><thead>
 <tr>
@@ -1956,6 +1958,148 @@ ids=15087023444,182162001806727&amp;since=2016-09-09&amp;until=2016-10-08"</span
 <td><strong>uniqueUsers</strong></td>
 <td>Number of <strong>unique users</strong> on the selected date.</td>
 <td>593</td>
+</tr>
+</tbody></table>
+
+          <h2 id="fb-user-ranking">fb.User Ranking</h2>
+<pre class="highlight shell"><code>curl -XGET <span class="s2">"https://api.quantum.socialmetrix.com/v1/accounts/</span><span class="k">${</span><span class="nv">ACCOUNT</span><span class="k">}</span><span class="se">\</span><span class="s2">
+/projects/</span><span class="k">${</span><span class="nv">PROJECT</span><span class="k">}</span><span class="s2">/facebook/users/ranking/comments?</span><span class="se">\</span><span class="s2">
+ids=15087023444,182162001806727&amp;since=2016-09-09&amp;until=2016-10-08"</span> <span class="se">\</span>
+  -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+  -H <span class="s2">"X-Auth-Token: </span><span class="k">${</span><span class="nv">JWT</span><span class="k">}</span><span class="s2">"</span>
+</code></pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">  
+   </span><span class="nt">"query"</span><span class="p">:{</span><span class="w">  
+      </span><span class="nt">"id"</span><span class="p">:</span><span class="s2">"/accounts/ACCOUNT/projects/PROJECT/facebook/users/ranking/comments"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"filters"</span><span class="p">:{</span><span class="w">  
+         </span><span class="nt">"timezone"</span><span class="p">:</span><span class="s2">"America/Argentina/Buenos_Aires"</span><span class="p">,</span><span class="w">
+         </span><span class="nt">"ids"</span><span class="p">:[</span><span class="w">  
+            </span><span class="s2">"1822115806727"</span><span class="w">
+         </span><span class="p">],</span><span class="w">
+         </span><span class="nt">"since"</span><span class="p">:</span><span class="s2">"2016-10-30"</span><span class="p">,</span><span class="w">
+         </span><span class="nt">"until"</span><span class="p">:</span><span class="s2">"2016-11-28"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="nt">"results"</span><span class="p">:[</span><span class="w">  
+      </span><span class="p">{</span><span class="w">  
+         </span><span class="nt">"id"</span><span class="p">:</span><span class="s2">"1822115806727"</span><span class="p">,</span><span class="w">
+         </span><span class="nt">"data"</span><span class="p">:[</span><span class="w">  
+            </span><span class="p">{</span><span class="w">  
+               </span><span class="nt">"id"</span><span class="p">:</span><span class="s2">"413531845481303"</span><span class="p">,</span><span class="w">
+               </span><span class="nt">"name"</span><span class="p">:</span><span class="s2">"Juan Perez"</span><span class="p">,</span><span class="w">
+               </span><span class="nt">"comments"</span><span class="p">:</span><span class="mi">11</span><span class="p">,</span><span class="w">
+               </span><span class="nt">"posts"</span><span class="p">:</span><span class="mi">0</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="p">{</span><span class="w">  
+               </span><span class="nt">"id"</span><span class="p">:</span><span class="s2">"1775081599427091"</span><span class="p">,</span><span class="w">
+               </span><span class="nt">"name"</span><span class="p">:</span><span class="s2">"Maria Gonzalez"</span><span class="p">,</span><span class="w">
+               </span><span class="nt">"comments"</span><span class="p">:</span><span class="mi">9</span><span class="p">,</span><span class="w">
+               </span><span class="nt">"posts"</span><span class="p">:</span><span class="mi">0</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+</span><span class="p">{</span><span class="w">  
+               </span><span class="nt">"id"</span><span class="p">:</span><span class="s2">"1439934276307218"</span><span class="p">,</span><span class="w">
+               </span><span class="nt">"name"</span><span class="p">:</span><span class="s2">"Diego Lopez"</span><span class="p">,</span><span class="w">
+               </span><span class="nt">"comments"</span><span class="p">:</span><span class="mi">4</span><span class="p">,</span><span class="w">
+               </span><span class="nt">"posts"</span><span class="p">:</span><span class="mi">0</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+         </span><span class="p">]</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+   </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>This endpoint returns a ranking of the most active users on a Facebook page, bringing the number of comments and posts they&rsquo;ve created in a selected time period, alongside with their <code class="prettyprint">name</code> and <code class="prettyprint">ID</code>.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET /accounts/&lt;ACCOUNT&gt;/projects/&lt;PROJECT&gt;/facebook/users/ranking/comments</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>ACCOUNT</strong></td>
+<td>The ID obtained from JWT response: <code class="prettyprint">user.accountId</code></td>
+<td>790</td>
+</tr>
+<tr>
+<td><strong>PROJECT</strong></td>
+<td>Current Project</td>
+<td>0</td>
+</tr>
+</tbody></table>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>ids</strong></td>
+<td>A comma-separated list of profiles ids belonging to the project</td>
+<td>15087023444,182162001806727</td>
+</tr>
+<tr>
+<td><strong>since</strong></td>
+<td>Starting date (inclusive)</td>
+<td>2016-09-09</td>
+</tr>
+<tr>
+<td><strong>until</strong></td>
+<td>Ending date (exclusive)</td>
+<td>2016-10-08</td>
+</tr>
+<tr>
+<td><strong><em>timezone</em></strong></td>
+<td>(Optional): Time-zone that my metrics should be calculated</td>
+<td>America/Argentina/Buenos_Aires</td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<p>The response contains a <code class="prettyprint">results</code> array of objects, which one profile <code class="prettyprint">id</code> per element. The array <code class="prettyprint">data</code> contains values representing the name, number of posts and number of comments made by the most active users of the page during the selected time period, starting from the date selected in <code class="prettyprint">since</code> and ending the date selected in <code class="prettyprint">until</code>. </p>
+
+<table><thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>id</strong></td>
+<td>The user&rsquo;s <strong>ID</strong>.</td>
+<td>413531845481303</td>
+</tr>
+<tr>
+<td><strong>name</strong></td>
+<td>The user&rsquo;s <strong>name</strong></td>
+<td>Maria Gonzalez</td>
+</tr>
+<tr>
+<td><strong>comments</strong></td>
+<td>The number of <strong>comments</strong> that the user has posted on the page.</td>
+<td>9</td>
+</tr>
+<tr>
+<td><strong>posts</strong></td>
+<td>The number of <strong>posts</strong> that the user has created on the page.</td>
+<td>0</td>
 </tr>
 </tbody></table>
 
