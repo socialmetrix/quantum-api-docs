@@ -55,7 +55,7 @@ This endpoint returns a ranking of the most active users on a Facebook page, bri
 
 ### HTTP Request
 
-`GET /accounts/<ACCOUNT>/projects/<PROJECT>/facebook/fans/count/date`
+`GET /accounts/<ACCOUNT>/projects/<PROJECT>/facebook/users/ranking/comments`
 
 ### URL Parameters
 
