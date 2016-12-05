@@ -20,6 +20,18 @@ includes:
   - facebook_fans_count_by_date
   - facebook_fans_count_by_country
   - facebook_user_ranking
+  - facebook_profile_interactions
+  - facebook_post_content
+  - facebook_post_stats
+  - facebook_profile_posts_ranking_interactions
+  - facebook_activity_count_by_weekday
+  - facebook_page_stats
+  - facebook_engagement_rate_by_date
+  - campaigns
+  - campaigns_stats
+  - campaigns_interaction_count_by_date
+  - Campaigns_Post_Count_by_Type
+  - campaigns_post_count_by_date
   - users
   - usage
   - others

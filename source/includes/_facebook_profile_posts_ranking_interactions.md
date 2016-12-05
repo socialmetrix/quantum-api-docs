@@ -97,7 +97,7 @@ Parameter | Description | Example
 
 ### Response
 
-The `results` is array of objects, it contains an `id` field which identifies the **profile id** and the `data` array contains a top 10 ordered list from the most popular to least popular by the number of interactions. The conten fields are related to [Facebook Post official doc.](https://developers.facebook.com/docs/graph-api/reference/v2.8/post)
+The `results` is array of objects, it contains an `id` field which identifies the **profile id** and the `data` array contains a top 10 ordered list from the most popular to least popular by the number of interactions. The content fields are related to [Facebook Post official doc.](https://developers.facebook.com/docs/graph-api/reference/v2.8/post)
 
 Field | Description | Example
 --------- | ----------- | -----------

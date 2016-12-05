@@ -12,7 +12,7 @@ ids=15087023444,182162001806727&since=2016-09-09&until=2016-10-08" \
 ```json
 {
   "query": {
-    "id": "/accounts/790/projects/0/facebook/profiles/interactions/count/interaction-type",
+    "id": "/accounts/ACCOUNT/projects/PROJECT/facebook/profiles/interactions/count/interaction-type",
     "filters": {
       "timezone": "America/Argentina/Buenos_Aires",
       "ids": [
