@@ -1,4 +1,4 @@
-##Campaigns stat summary
+##Campaign Summary
 ```shell
 curl -XGET "https://api.quantum.socialmetrix.com/v1/accounts/${ACCOUNT}\
 /projects/${PROJECT}/campaigns/stat-summary?\

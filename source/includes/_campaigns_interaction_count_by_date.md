@@ -1,4 +1,4 @@
-##Campaigns interaction count by date
+##Campaign Interaction by Date
 ```shell
 curl -XGET "https://api.quantum.socialmetrix.com/v1/accounts/${ACCOUNT}\
 /projects/${PROJECT}/campaigns/interactions/count/date?\

@@ -30,7 +30,7 @@ includes:
   - campaigns
   - campaigns_stats
   - campaigns_interaction_count_by_date
-  - Campaigns_Post_Count_by_Type
+  - campaigns_post_count_by_type
   - campaigns_post_count_by_date
   - users
   - usage

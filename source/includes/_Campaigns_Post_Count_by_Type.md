@@ -1,4 +1,4 @@
-##Campaigns Post Count by Type
+##fb.Campaign Post by Type
 ```shell
 curl -XGET "https://api.quantum.socialmetrix.com/v1/accounts/${ACCOUNT}\
 /projects/${PROJECT}/facebook/campaigns/posts/count/type?\

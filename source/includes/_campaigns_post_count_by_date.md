@@ -1,4 +1,4 @@
-##Campaigns Post Count by Date
+##fb.Campaign Posts by Date
 ```shell
 curl -XGET "https://api.quantum.socialmetrix.com/v1/accounts/${ACCOUNT}\
 /projects/${PROJECT}/facebook/campaigns/posts/count/date?\
