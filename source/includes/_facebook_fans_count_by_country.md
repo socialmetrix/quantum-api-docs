@@ -1,4 +1,4 @@
-##fb.Fans count by country  
+##fb.Fans Count by Country  
 ```shell
 curl -XGET "https://api.quantum.socialmetrix.com/v1/accounts/${ACCOUNT}\
 /projects/${PROJECT}/facebook/fans/count/country/date?\

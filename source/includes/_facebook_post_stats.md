@@ -1,4 +1,4 @@
-##fb.Post stats
+##fb.Post Stats
 ```shell
 curl -XGET "https://api.quantum.socialmetrix.com/v1/accounts/${ACCOUNT}\
 /projects/${PROJECT}/facebook/profiles/posts-interactions/count/date?\

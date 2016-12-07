@@ -1,4 +1,4 @@
-##fb.Post count by type  
+##fb.Post Count by Type  
 ```shell
 curl -XGET "https://api.quantum.socialmetrix.com/v1/accounts/${ACCOUNT}\
 /projects/${PROJECT}/facebook/profiles/posts/count/type?\

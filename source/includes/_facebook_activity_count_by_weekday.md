@@ -1,4 +1,4 @@
-##fb.Activity count by weekday  
+##fb.Activity Count by Weekday  
 ```shell
 curl -XGET "https://api.quantum.socialmetrix.com/v1/accounts/${ACCOUNT}\
 /projects/${PROJECT}/facebook/activity/count/weekday/hour?\

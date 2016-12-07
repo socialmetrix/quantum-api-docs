@@ -1,4 +1,4 @@
-##fb.Fans count by date
+##fb.Fans Count by Date
 
 ```shell
 curl -XGET "https://api.quantum.socialmetrix.com/v1/accounts/${ACCOUNT}\

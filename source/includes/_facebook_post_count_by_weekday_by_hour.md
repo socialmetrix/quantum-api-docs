@@ -1,4 +1,4 @@
-##fb.Post count by weekday by hour
+##fb.Post Count by Weekday by Hour
 
 ```shell
 curl -XGET "https://api.quantum.socialmetrix.com/v1/accounts/${ACCOUNT}\

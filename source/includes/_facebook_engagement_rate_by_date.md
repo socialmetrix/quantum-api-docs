@@ -1,4 +1,4 @@
-##fb.Engagement Rate by date 
+##fb.Engagement Rate by Date 
 ```shell
 curl -XGET "https://api.quantum.socialmetrix.com/v1/accounts/${ACCOUNT}\
 /projects/${PROJECT}/facebook/profiles/engagement-rate/date?\
